@@ -13,8 +13,8 @@ public class DiceRollerUI : MonoBehaviour
     [SerializeField] private Sprite[] diceFaceSprites = new Sprite[6];
 
     [Header("Fake Roll Animation")]
-    [SerializeField] private int shuffleFrames = 30;
-    [SerializeField] private float frameDelay = 0.06f;
+    [SerializeField] private int shuffleFrames = 22;
+    [SerializeField] private float frameDelay = 0.08f;
 
     public int CurrentValue { get; private set; }
     public bool CanRoll { get; private set; } = true;
