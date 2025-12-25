@@ -1,23 +1,25 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class PawnSelection : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private Camera rayCamera;          // AR Camera / Main Camera
-    [SerializeField] private DiceRollerUI diceRollerUI; // Dice script
+    [SerializeField] private DiceRollerUI diceRollerUI; // GameManager üzerindeki DiceRollerUI
+    [SerializeField] private TurnManager turnManager;   // GameManager üzerindeki TurnManager
 
-    private Pawn selected;
+    private Pawn selectedPawn;
 
     void Update()
     {
         if (rayCamera == null || diceRollerUI == null) return;
 
-        // Dokunma veya mouse tıklaması yakala (Input System)
         Vector2? screenPos = GetPointerDownPosition();
         if (screenPos == null) return;
 
-        // UI üstüne tıklanıyorsa pawn seçme (çakışma olmasın)
+        // UI üstüne tıklanıyorsa pawn seçme (zar butonuyla çakışmasın)
         if (IsPointerOverUI(screenPos.Value))
             return;
 
@@ -25,24 +27,34 @@ public class PawnSelection : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
             Pawn pawn = hit.collider.GetComponentInParent<Pawn>();
-            if (pawn != null)
-            {
-                selected = pawn;
-                diceRollerUI.SetSelectedPawn(selected);
-                Debug.Log("Selected pawn: " + pawn.name);
-            }
+            if (pawn == null) return;
+
+            // Tur kontrolü: sadece current turn takımının pawn'u seçilebilsin
+            if (turnManager != null && !turnManager.CanPlay(pawn.team))
+                return;
+
+            selectedPawn = pawn;
+            diceRollerUI.SetSelectedPawn(selectedPawn);
+
+            Debug.Log("Selected pawn: " + selectedPawn.name);
         }
     }
 
     private Vector2? GetPointerDownPosition()
     {
         // Mobil dokunma
-        if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.wasPressedThisFrame)
+        if (Touchscreen.current != null &&
+            Touchscreen.current.primaryTouch.press.wasPressedThisFrame)
+        {
             return Touchscreen.current.primaryTouch.position.ReadValue();
+        }
 
         // Editor / PC mouse
-        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
+        if (Mouse.current != null &&
+            Mouse.current.leftButton.wasPressedThisFrame)
+        {
             return Mouse.current.position.ReadValue();
+        }
 
         return null;
     }
@@ -56,7 +68,7 @@ public class PawnSelection : MonoBehaviour
             position = screenPosition
         };
 
-        var results = new System.Collections.Generic.List<RaycastResult>();
+        var results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(ped, results);
         return results.Count > 0;
     }
