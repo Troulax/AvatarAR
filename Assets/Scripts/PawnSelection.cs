@@ -7,19 +7,18 @@ public class PawnSelection : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Camera rayCamera;          // AR Camera / Main Camera
-    [SerializeField] private DiceRollerUI diceRollerUI; // GameManager üzerindeki DiceRollerUI
     [SerializeField] private TurnManager turnManager;   // GameManager üzerindeki TurnManager
 
     private Pawn selectedPawn;
 
     void Update()
     {
-        if (rayCamera == null || diceRollerUI == null) return;
+        if (rayCamera == null || turnManager == null) return;
 
         Vector2? screenPos = GetPointerDownPosition();
         if (screenPos == null) return;
 
-        // UI üstüne tıklanıyorsa pawn seçme (zar butonuyla çakışmasın)
+        // UI üstüne tıklanıyorsa pawn seçme (butonla çakışmasın)
         if (IsPointerOverUI(screenPos.Value))
             return;
 
@@ -29,12 +28,12 @@ public class PawnSelection : MonoBehaviour
             Pawn pawn = hit.collider.GetComponentInParent<Pawn>();
             if (pawn == null) return;
 
-            // Tur kontrolü: sadece current turn takımının pawn'u seçilebilsin
-            if (turnManager != null && !turnManager.CanPlay(pawn.team))
-                return;
+            // Sadece RED human seçebilsin
+            if (!turnManager.IsHumanTurn) return;
+            if (pawn.team != TeamColor.Red) return;
 
             selectedPawn = pawn;
-            diceRollerUI.SetSelectedPawn(selectedPawn);
+            turnManager.SetHumanSelectedPawn(selectedPawn);
 
             Debug.Log("Selected pawn: " + selectedPawn.name);
         }

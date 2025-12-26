@@ -5143,8 +5143,8 @@ GameObject:
   - component: {fileID: 1449879887}
   - component: {fileID: 1449879890}
   - component: {fileID: 1449879893}
-  - component: {fileID: 1449879892}
   - component: {fileID: 1449879891}
+  - component: {fileID: 1449879894}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -5175,8 +5175,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: ed5e4b14c11b1f94d933044664c7e6c0, type: 3}
   shuffleFrames: 22
   frameDelay: 0.08
-  pawnMover: {fileID: 217141123}
-  selectedPawn: {fileID: 1728790649}
 --- !u!4 &1449879888
 Transform:
   m_ObjectHideFlags: 0
@@ -5219,20 +5217,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PawnSelection
   rayCamera: {fileID: 1644681237}
-  diceRollerUI: {fileID: 1449879887}
-  turnManager: {fileID: 1449879892}
---- !u!114 &1449879892
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1449879886}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3234646b4ad021b478a7167fe7659f21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TurnManager
+  turnManager: {fileID: 1449879894}
 --- !u!114 &1449879893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5279,6 +5264,48 @@ MonoBehaviour:
     - {fileID: 1471467767}
     - {fileID: 343218368}
     finishTile: {fileID: 986287068}
+--- !u!114 &1449879894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1449879886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3234646b4ad021b478a7167fe7659f21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TurnManager
+  dice: {fileID: 1449879887}
+  mover: {fileID: 217141123}
+  turnImage: {fileID: 289780547}
+  redTurnSprite: {fileID: 21300000, guid: 10c52753bc4c86049b831701f954546b, type: 3}
+  greenTurnSprite: {fileID: 21300000, guid: 86f48666d7e961e41ba3cdbfcc7f097f, type: 3}
+  blueTurnSprite: {fileID: 21300000, guid: 1ed92e9a43eda1444a9118817a2bd9c8, type: 3}
+  yellowTurnSprite: {fileID: 21300000, guid: c80278eeba916ee4398a956f15eafb3b, type: 3}
+  turnDelaySeconds: 1
+  turnOrder: 00000000010000000200000003000000
+  redPawns:
+  - {fileID: 1728790649}
+  - {fileID: 938496150}
+  - {fileID: 1213270529}
+  - {fileID: 668758650}
+  greenPawns:
+  - {fileID: 706285599}
+  - {fileID: 1204948841}
+  - {fileID: 889481949}
+  - {fileID: 781708159}
+  bluePawns:
+  - {fileID: 1427324041}
+  - {fileID: 1961178424}
+  - {fileID: 1745737552}
+  - {fileID: 778893467}
+  yellowPawns:
+  - {fileID: 389952645}
+  - {fileID: 1682349480}
+  - {fileID: 763370775}
+  - {fileID: 1002764820}
+  redIsHuman: 1
 --- !u!1 &1457263682
 GameObject:
   m_ObjectHideFlags: 0
@@ -7054,6 +7081,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1449879894}
+        m_TargetAssemblyTypeName: TurnManager, Assembly-CSharp
+        m_MethodName: OnHumanPressedRoll
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

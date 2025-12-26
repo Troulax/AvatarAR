@@ -8,95 +8,54 @@ public class DiceRollerUI : MonoBehaviour
     [SerializeField] private Button rollButton;
     [SerializeField] private Image diceFaceImage;
 
-    [Header("Dice Sprites")]
-    [Tooltip("Index 0 = face 1, index 5 = face 6")]
+    [Header("Dice Sprites (Index 0=1 .. 5=6)")]
     [SerializeField] private Sprite[] diceFaceSprites = new Sprite[6];
 
     [Header("Fake Roll Animation")]
     [SerializeField] private int shuffleFrames = 12;
     [SerializeField] private float frameDelay = 0.06f;
 
-    [Header("Gameplay References")]
-    [SerializeField] private PawnMover pawnMover;
-    [Tooltip("Şimdilik test için Inspector'dan bir pawn ver. Sonra seçim sistemiyle dinamik olacak.")]
-    [SerializeField] private Pawn selectedPawn;
-
+    public bool IsRolling { get; private set; }
     public int CurrentValue { get; private set; }
-    public bool CanRoll { get; private set; } = true;
 
-    public void Roll()
+    public void SetRollButtonInteractable(bool interactable)
     {
-        if (!CanRoll) return;
+        if (rollButton != null) rollButton.interactable = interactable;
+    }
+
+    public IEnumerator RollDiceCoroutine(System.Action<int> onResult)
+    {
+        if (IsRolling) yield break;
 
         if (diceFaceSprites == null || diceFaceSprites.Length < 6)
         {
-            Debug.LogError("DiceFaceSprites array must contain 6 sprites (1–6).");
-            return;
+            Debug.LogError("DiceFaceSprites must contain 6 sprites.");
+            yield break;
         }
 
-        if (diceFaceImage == null)
-        {
-            Debug.LogError("DiceFaceImage is not assigned.");
-            return;
-        }
-
-        if (pawnMover == null)
-        {
-            Debug.LogError("PawnMover is not assigned.");
-            return;
-        }
-
-        if (selectedPawn == null)
-        {
-            Debug.LogWarning("SelectedPawn is not assigned. Assign a pawn for testing.");
-            return;
-        }
-
-        StartCoroutine(RollAndMoveCoroutine());
-    }
-
-    private IEnumerator RollAndMoveCoroutine()
-    {
-        CanRoll = false;
+        IsRolling = true;
         SetRollButtonInteractable(false);
 
-        // Fake rolling: hızlı sprite değişimi
         for (int i = 0; i < shuffleFrames; i++)
         {
-            int fakeValue = Random.Range(1, 7);
-            SetDiceFace(fakeValue);
+            int fake = Random.Range(1, 7);
+            SetDiceFace(fake);
             yield return new WaitForSeconds(frameDelay);
         }
 
-        // Final sonuç
         CurrentValue = Random.Range(1, 7);
         SetDiceFace(CurrentValue);
 
-        Debug.Log($"Final Dice Value: {CurrentValue}");
+        onResult?.Invoke(CurrentValue);
 
-        // Pawn'ı zar kadar ilerlet (tile tile)
-        yield return pawnMover.MoveSelectedPawnCoroutine(selectedPawn, CurrentValue);
-
-        // Hareket bitince tekrar zar atılabilir
-        CanRoll = true;
-        SetRollButtonInteractable(true);
+        IsRolling = false;
+        // Butonun tekrar açılıp açılmayacağına TurnManager karar verecek
     }
 
     private void SetDiceFace(int value)
     {
+        if (diceFaceImage == null) return;
         diceFaceImage.sprite = diceFaceSprites[value - 1];
         diceFaceImage.enabled = true;
-    }
-
-    private void SetRollButtonInteractable(bool interactable)
-    {
-        if (rollButton != null)
-            rollButton.interactable = interactable;
-    }
-
-    // Seçim sistemi ekleyince burayı çağırarak pawn'u değiştireceksin
-    public void SetSelectedPawn(Pawn pawn)
-    {
-        selectedPawn = pawn;
     }
 }

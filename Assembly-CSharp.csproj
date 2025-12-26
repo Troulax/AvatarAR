@@ -67,6 +67,7 @@
     <Compile Include="Assets\Scripts\TilePath.cs" />
     <Compile Include="Assets\Scripts\DiceRollerUI.cs" />
     <Compile Include="Assets\Scripts\PawnSelection.cs" />
+    <Compile Include="Assets\Scripts\HumanPawnSelector.cs" />
     <Compile Include="Assets\Scripts\PawnMover.cs" />
     <Compile Include="Assets\Scripts\Rotate.cs" />
   </ItemGroup>
