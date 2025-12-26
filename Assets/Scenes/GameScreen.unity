@@ -163,6 +163,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 18905040}
+  - component: {fileID: 18905041}
   m_Layer: 0
   m_Name: Tile_35
   m_TagString: Untagged
@@ -185,6 +186,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &18905041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 18905039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!4 &27668118 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6271888284936534216, guid: 6ab2c49d30f1a854eb1aae2ae99c28e4, type: 3}
@@ -199,6 +216,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 50268043}
+  - component: {fileID: 50268044}
   m_Layer: 0
   m_Name: Tile_4
   m_TagString: Untagged
@@ -221,6 +239,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &50268044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 50268042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!4 &67993087 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1225308030901192721, guid: 2cf08460f29da504690b8078dbd57e66, type: 3}
@@ -394,7 +428,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1070560527}
     m_Modifications:
     - target: {fileID: 347564432666211691, guid: 53bbf0f6a19c29641944a14c460e4e1a, type: 3}
       propertyPath: m_DirtyAABB
@@ -470,15 +504,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: 53bbf0f6a19c29641944a14c460e4e1a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2204.47
+      value: 5.425293
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: 53bbf0f6a19c29641944a14c460e4e1a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.00000047683716
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: 53bbf0f6a19c29641944a14c460e4e1a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8031.34
+      value: 0.671875
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: 53bbf0f6a19c29641944a14c460e4e1a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -486,7 +520,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: 53bbf0f6a19c29641944a14c460e4e1a, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: 53bbf0f6a19c29641944a14c460e4e1a, type: 3}
       propertyPath: m_LocalRotation.y
@@ -494,7 +528,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: 53bbf0f6a19c29641944a14c460e4e1a, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: 53bbf0f6a19c29641944a14c460e4e1a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -517,10 +551,20 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: -5645937942226959685, guid: 53bbf0f6a19c29641944a14c460e4e1a, type: 3}
+--- !u!4 &170487296 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8897093224900880590, guid: e2e185ecac21ff641932d22708a9e623, type: 3}
+  m_PrefabInstance: {fileID: 783252965}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &191491079 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3347950670213282789, guid: 12f9c4ca910ae924eb690b30619dfaba, type: 3}
   m_PrefabInstance: {fileID: 3844345299056599511}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &195312204 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8897093224900880590, guid: 82ce5aa39a68a5a4b863deca422b9162, type: 3}
+  m_PrefabInstance: {fileID: 1899577603}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &199314715
 GameObject:
@@ -531,6 +575,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 199314716}
+  - component: {fileID: 199314717}
   m_Layer: 0
   m_Name: Tile_47
   m_TagString: Untagged
@@ -553,6 +598,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 778176984}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &199314717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 199314715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &204028689
 GameObject:
   m_ObjectHideFlags: 0
@@ -562,6 +623,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 204028690}
+  - component: {fileID: 204028691}
   m_Layer: 0
   m_Name: Tile_7
   m_TagString: Untagged
@@ -584,6 +646,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &204028691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 204028689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &209195781
 GameObject:
   m_ObjectHideFlags: 0
@@ -653,6 +731,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PawnMover
   tilePath: {fileID: 1449879893}
   stepDuration: 0.15
+  safeStarRingTiles:
+  - {fileID: 222335823}
+  - {fileID: 1219762360}
+  - {fileID: 1330639385}
+  - {fileID: 1613990466}
+  - {fileID: 1900785699}
+  - {fileID: 1366026825}
+  - {fileID: 386708471}
+  - {fileID: 18905040}
+  capturePopHeight: 0.12
+  capturePopTime: 0.12
+  captureMoveToStartTime: 0.35
+  captureShrinkScale: 0.65
+  delayAfterCaptureSeconds: 1
 --- !u!4 &217141124
 Transform:
   m_ObjectHideFlags: 0
@@ -661,12 +753,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 217141122}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: -0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2209.96, y: 0, z: -8029.95}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1449879888}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &218096643
 GameObject:
@@ -804,6 +896,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 218096643}
   m_CullTransparentMesh: 1
+--- !u!4 &219712819 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8897093224900880590, guid: adb05d9e5efafe344be024dd5db84df7, type: 3}
+  m_PrefabInstance: {fileID: 258368096}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &222335822
 GameObject:
   m_ObjectHideFlags: 0
@@ -813,6 +910,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 222335823}
+  - component: {fileID: 222335824}
   m_Layer: 0
   m_Name: Tile_1
   m_TagString: Untagged
@@ -835,6 +933,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &222335824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 222335822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
+--- !u!4 &222742386 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8897093224900880590, guid: 53bbf0f6a19c29641944a14c460e4e1a, type: 3}
+  m_PrefabInstance: {fileID: 134602532}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &230674636
 GameObject:
   m_ObjectHideFlags: 0
@@ -880,6 +999,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 242077853}
+  - component: {fileID: 242077854}
   m_Layer: 0
   m_Name: Tile_28
   m_TagString: Untagged
@@ -902,6 +1022,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &242077854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 242077852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &256887985
 GameObject:
   m_ObjectHideFlags: 0
@@ -911,6 +1047,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 256887986}
+  - component: {fileID: 256887987}
   m_Layer: 0
   m_Name: Tile_36
   m_TagString: Untagged
@@ -933,13 +1070,34 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &256887987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 256887985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
+--- !u!4 &257523227 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -3453340161848835122, guid: edd716b52b9f9b940a35529873ff6040, type: 3}
+  m_PrefabInstance: {fileID: 1285074427}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &258368096
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1070560527}
     m_Modifications:
     - target: {fileID: -4552529503237887981, guid: adb05d9e5efafe344be024dd5db84df7, type: 3}
       propertyPath: m_ConstrainProportionsScale
@@ -1007,7 +1165,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: adb05d9e5efafe344be024dd5db84df7, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.19999999
+      value: 0.19999997
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: adb05d9e5efafe344be024dd5db84df7, type: 3}
       propertyPath: m_LocalScale.y
@@ -1015,11 +1173,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: adb05d9e5efafe344be024dd5db84df7, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.19999999
+      value: 0.19999997
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: adb05d9e5efafe344be024dd5db84df7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2215.48
+      value: -5.584717
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: adb05d9e5efafe344be024dd5db84df7, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1027,7 +1185,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: adb05d9e5efafe344be024dd5db84df7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8028.41
+      value: -2.2578125
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: adb05d9e5efafe344be024dd5db84df7, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1035,7 +1193,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: adb05d9e5efafe344be024dd5db84df7, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: adb05d9e5efafe344be024dd5db84df7, type: 3}
       propertyPath: m_LocalRotation.y
@@ -1043,7 +1201,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: adb05d9e5efafe344be024dd5db84df7, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: adb05d9e5efafe344be024dd5db84df7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1075,6 +1233,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 271624404}
+  - component: {fileID: 271624405}
   m_Layer: 0
   m_Name: Tile_Yellow_Finish
   m_TagString: Untagged
@@ -1097,6 +1256,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 427055427}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &271624405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 271624403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.2
+  crowdExpand: 1.12
 --- !u!1 &289780545
 GameObject:
   m_ObjectHideFlags: 0
@@ -1181,6 +1356,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 302675800}
+  - component: {fileID: 302675801}
   m_Layer: 0
   m_Name: Tile_10
   m_TagString: Untagged
@@ -1203,6 +1379,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &302675801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 302675799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &312177309 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4996315409211303591, guid: aa660f31f41ee7b45a5bc4476ff2869b, type: 3}
@@ -1248,6 +1440,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 343218368}
+  - component: {fileID: 343218369}
   m_Layer: 0
   m_Name: Tile_55
   m_TagString: Untagged
@@ -1270,6 +1463,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 478564701}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &343218369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 343218367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &346802736
 GameObject:
   m_ObjectHideFlags: 0
@@ -1424,6 +1633,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 366921122}
+  - component: {fileID: 366921123}
   m_Layer: 0
   m_Name: Tile_46
   m_TagString: Untagged
@@ -1446,6 +1656,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 778176984}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &366921123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 366921121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &374458826
 GameObject:
   m_ObjectHideFlags: 0
@@ -1455,6 +1681,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 374458827}
+  - component: {fileID: 374458828}
   m_Layer: 0
   m_Name: Tile_41
   m_TagString: Untagged
@@ -1477,6 +1704,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &374458828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 374458826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &386708470
 GameObject:
   m_ObjectHideFlags: 0
@@ -1486,6 +1729,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 386708471}
+  - component: {fileID: 386708472}
   m_Layer: 0
   m_Name: Tile_34
   m_TagString: Untagged
@@ -1508,6 +1752,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &386708472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 386708470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!4 &389952641 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7965450047609430299, guid: 982cf88dd1f76c74393681bd353998fc, type: 3}
@@ -1739,6 +1999,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 474367148}
+  - component: {fileID: 474367149}
   m_Layer: 0
   m_Name: Tile_19
   m_TagString: Untagged
@@ -1761,6 +2022,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &474367149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 474367147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &478564700
 GameObject:
   m_ObjectHideFlags: 0
@@ -1810,6 +2087,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 516299781}
+  - component: {fileID: 516299782}
   m_Layer: 0
   m_Name: Tile_59
   m_TagString: Untagged
@@ -1832,6 +2110,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 359136369}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &516299782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 516299780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &519767807
 GameObject:
   m_ObjectHideFlags: 0
@@ -1841,6 +2135,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 519767808}
+  - component: {fileID: 519767809}
   m_Layer: 0
   m_Name: Tile_22
   m_TagString: Untagged
@@ -1863,6 +2158,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &519767809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519767807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &520873091
 GameObject:
   m_ObjectHideFlags: 0
@@ -1907,6 +2218,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 531321693}
+  - component: {fileID: 531321694}
   m_Layer: 0
   m_Name: Tile_5
   m_TagString: Untagged
@@ -1929,6 +2241,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &531321694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 531321692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &543749855 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8831127846801216258, guid: 523dcdb13e84b114bb3cdbc6edb25d6f, type: 3}
@@ -2056,6 +2384,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 617512780}
+  - component: {fileID: 617512781}
   m_Layer: 0
   m_Name: Tile_30
   m_TagString: Untagged
@@ -2078,6 +2407,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &617512781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 617512779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &623207219
 GameObject:
   m_ObjectHideFlags: 0
@@ -2087,6 +2432,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 623207220}
+  - component: {fileID: 623207221}
   m_Layer: 0
   m_Name: Tile_42
   m_TagString: Untagged
@@ -2109,6 +2455,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &623207221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 623207219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &632223158
 GameObject:
   m_ObjectHideFlags: 0
@@ -2118,6 +2480,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 632223159}
+  - component: {fileID: 632223160}
   m_Layer: 0
   m_Name: Tile_11
   m_TagString: Untagged
@@ -2140,6 +2503,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &632223160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 632223158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &635962485
 GameObject:
   m_ObjectHideFlags: 0
@@ -2149,6 +2528,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 635962486}
+  - component: {fileID: 635962487}
   m_Layer: 0
   m_Name: Tile_33
   m_TagString: Untagged
@@ -2171,6 +2551,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &635962487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 635962485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &637277775
 GameObject:
   m_ObjectHideFlags: 0
@@ -2393,6 +2789,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 658565144}
+  - component: {fileID: 658565145}
   m_Layer: 0
   m_Name: Tile_27
   m_TagString: Untagged
@@ -2415,6 +2812,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &658565145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 658565143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!4 &668758645 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2408019789003363807, guid: 7a055b0823cfa2a46aeb5c14346e84d1, type: 3}
@@ -2456,6 +2869,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 686213375}
+  - component: {fileID: 686213376}
   m_Layer: 0
   m_Name: Tile_50
   m_TagString: Untagged
@@ -2478,13 +2892,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1190101330}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &686213376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 686213374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1001 &701018720
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1070560527}
     m_Modifications:
     - target: {fileID: 8128668236925612103, guid: a217108ce33b53243b58707e4f13be8a, type: 3}
       propertyPath: m_Name
@@ -2504,7 +2934,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: a217108ce33b53243b58707e4f13be8a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2208.51
+      value: 1.3852539
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: a217108ce33b53243b58707e4f13be8a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2512,7 +2942,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: a217108ce33b53243b58707e4f13be8a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8024.52
+      value: -6.147949
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: a217108ce33b53243b58707e4f13be8a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2627,6 +3057,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 718645615}
+  - component: {fileID: 718645616}
   m_Layer: 0
   m_Name: Tiles
   m_TagString: Untagged
@@ -2652,6 +3083,23 @@ Transform:
   - {fileID: 427055427}
   m_Father: {fileID: 2111526816}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &718645616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 718645614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 601588ea6f663624a805adb6e61064b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TilesRoot
+  ringTiles: {fileID: 983522727}
+  safeZoneTiles: {fileID: 4235767}
+  finishTile: {fileID: 427055427}
+  offset: 0.08
+  height: 0.02
 --- !u!1 &762538670
 GameObject:
   m_ObjectHideFlags: 0
@@ -2864,7 +3312,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1070560527}
     m_Modifications:
     - target: {fileID: -2467422734747282408, guid: e2e185ecac21ff641932d22708a9e623, type: 3}
       propertyPath: m_DirtyAABB
@@ -2996,15 +3444,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: e2e185ecac21ff641932d22708a9e623, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2211.49
+      value: -1.5947266
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: e2e185ecac21ff641932d22708a9e623, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.00000047683716
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: e2e185ecac21ff641932d22708a9e623, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8035.42
+      value: 4.751953
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: e2e185ecac21ff641932d22708a9e623, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3012,7 +3460,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: e2e185ecac21ff641932d22708a9e623, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: e2e185ecac21ff641932d22708a9e623, type: 3}
       propertyPath: m_LocalRotation.y
@@ -3020,7 +3468,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: e2e185ecac21ff641932d22708a9e623, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: e2e185ecac21ff641932d22708a9e623, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3052,6 +3500,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 815802430}
+  - component: {fileID: 815802431}
   m_Layer: 0
   m_Name: Tile_20
   m_TagString: Untagged
@@ -3074,6 +3523,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &815802431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 815802429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &822155803
 GameObject:
   m_ObjectHideFlags: 0
@@ -3114,6 +3579,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 836908505}
+  - component: {fileID: 836908506}
   m_Layer: 0
   m_Name: Tile_25
   m_TagString: Untagged
@@ -3136,6 +3602,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &836908506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 836908504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &880375910
 GameObject:
   m_ObjectHideFlags: 0
@@ -3408,6 +3890,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 925453535}
+  - component: {fileID: 925453536}
   m_Layer: 0
   m_Name: Tile_53
   m_TagString: Untagged
@@ -3430,6 +3913,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 478564701}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &925453536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 925453534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &938496146 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4637256439498976107, guid: 12750ae4a0d686a41a983051ab8047e5, type: 3}
@@ -3607,6 +4106,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 981276105}
+  - component: {fileID: 981276106}
   m_Layer: 0
   m_Name: Tile_56
   m_TagString: Untagged
@@ -3629,6 +4129,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 359136369}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &981276106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 981276104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &983522726
 GameObject:
   m_ObjectHideFlags: 0
@@ -3713,6 +4229,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 986287068}
+  - component: {fileID: 986287069}
   m_Layer: 0
   m_Name: Tile_Blue_Finish
   m_TagString: Untagged
@@ -3735,6 +4252,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 427055427}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &986287069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 986287067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.2
+  crowdExpand: 1.12
 --- !u!1 &995010593
 GameObject:
   m_ObjectHideFlags: 0
@@ -3744,6 +4277,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 995010594}
+  - component: {fileID: 995010595}
   m_Layer: 0
   m_Name: Tile_40
   m_TagString: Untagged
@@ -3766,6 +4300,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &995010595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 995010593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &1002764816 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3462879068353839495, guid: 6ab2c49d30f1a854eb1aae2ae99c28e4, type: 3}
@@ -3804,7 +4354,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1575614851}
     m_Modifications:
     - target: {fileID: -3453340161848835122, guid: 7fb70515ebcb34e4dacb0cf0d55515dd, type: 3}
       propertyPath: m_LocalScale.x
@@ -3820,7 +4370,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3453340161848835122, guid: 7fb70515ebcb34e4dacb0cf0d55515dd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2204
+      value: 5.8952637
       objectReference: {fileID: 0}
     - target: {fileID: -3453340161848835122, guid: 7fb70515ebcb34e4dacb0cf0d55515dd, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3828,7 +4378,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3453340161848835122, guid: 7fb70515ebcb34e4dacb0cf0d55515dd, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8036.27
+      value: 5.602051
       objectReference: {fileID: 0}
     - target: {fileID: -3453340161848835122, guid: 7fb70515ebcb34e4dacb0cf0d55515dd, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3836,7 +4386,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3453340161848835122, guid: 7fb70515ebcb34e4dacb0cf0d55515dd, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -3453340161848835122, guid: 7fb70515ebcb34e4dacb0cf0d55515dd, type: 3}
       propertyPath: m_LocalRotation.y
@@ -3844,7 +4394,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3453340161848835122, guid: 7fb70515ebcb34e4dacb0cf0d55515dd, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -3453340161848835122, guid: 7fb70515ebcb34e4dacb0cf0d55515dd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3911,6 +4461,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1050131470}
+  - component: {fileID: 1050131471}
   m_Layer: 0
   m_Name: Tile_22
   m_TagString: Untagged
@@ -3933,6 +4484,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1050131471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1050131469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &1052925145
 GameObject:
   m_ObjectHideFlags: 0
@@ -3964,6 +4531,41 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2104043230}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1070560526
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1070560527}
+  m_Layer: 0
+  m_Name: Avatars
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1070560527
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1070560526}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2209.8953, y: 0, z: 8030.668}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 219712819}
+  - {fileID: 222742386}
+  - {fileID: 170487296}
+  - {fileID: 2016194067}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1096817675
 GameObject:
   m_ObjectHideFlags: 0
@@ -3973,6 +4575,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1096817676}
+  - component: {fileID: 1096817677}
   m_Layer: 0
   m_Name: Tile_29
   m_TagString: Untagged
@@ -3995,6 +4598,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1096817677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1096817675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &1099852545
 GameObject:
   m_ObjectHideFlags: 0
@@ -4004,6 +4623,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1099852546}
+  - component: {fileID: 1099852547}
   m_Layer: 0
   m_Name: Tile_37
   m_TagString: Untagged
@@ -4026,6 +4646,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1099852547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1099852545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &1168283078
 GameObject:
   m_ObjectHideFlags: 0
@@ -4066,6 +4702,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1176868291}
+  - component: {fileID: 1176868292}
   m_Layer: 0
   m_Name: Tile_15
   m_TagString: Untagged
@@ -4088,6 +4725,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1176868292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1176868290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &1177896345
 GameObject:
   m_ObjectHideFlags: 0
@@ -4097,6 +4750,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1177896346}
+  - component: {fileID: 1177896347}
   m_Layer: 0
   m_Name: Tile_43
   m_TagString: Untagged
@@ -4119,6 +4773,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1177896347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1177896345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &1187070371
 GameObject:
   m_ObjectHideFlags: 0
@@ -4198,6 +4868,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1195201009}
+  - component: {fileID: 1195201010}
   m_Layer: 0
   m_Name: Tile_44
   m_TagString: Untagged
@@ -4220,6 +4891,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 778176984}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1195201010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1195201008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &1204508023
 GameObject:
   m_ObjectHideFlags: 0
@@ -4229,6 +4916,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1204508024}
+  - component: {fileID: 1204508025}
   m_Layer: 0
   m_Name: Tile_3
   m_TagString: Untagged
@@ -4251,6 +4939,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1204508025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1204508023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!4 &1204948837 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4719789699279959239, guid: aa660f31f41ee7b45a5bc4476ff2869b, type: 3}
@@ -4324,6 +5028,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1219762360}
+  - component: {fileID: 1219762361}
   m_Layer: 0
   m_Name: Tile_2
   m_TagString: Untagged
@@ -4346,6 +5051,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1219762361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1219762359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &1227760271 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7735966369738686956, guid: 29d02a6a4a1582444b6c0a66c32eac41, type: 3}
@@ -4489,7 +5210,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1575614851}
     m_Modifications:
     - target: {fileID: -3453340161848835122, guid: edd716b52b9f9b940a35529873ff6040, type: 3}
       propertyPath: m_LocalScale.x
@@ -4505,7 +5226,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3453340161848835122, guid: edd716b52b9f9b940a35529873ff6040, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2216.32
+      value: -6.4248047
       objectReference: {fileID: 0}
     - target: {fileID: -3453340161848835122, guid: edd716b52b9f9b940a35529873ff6040, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4513,7 +5234,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3453340161848835122, guid: edd716b52b9f9b940a35529873ff6040, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8023.59
+      value: -7.078125
       objectReference: {fileID: 0}
     - target: {fileID: -3453340161848835122, guid: edd716b52b9f9b940a35529873ff6040, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4521,7 +5242,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3453340161848835122, guid: edd716b52b9f9b940a35529873ff6040, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -3453340161848835122, guid: edd716b52b9f9b940a35529873ff6040, type: 3}
       propertyPath: m_LocalRotation.y
@@ -4529,7 +5250,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3453340161848835122, guid: edd716b52b9f9b940a35529873ff6040, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -3453340161848835122, guid: edd716b52b9f9b940a35529873ff6040, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4565,6 +5286,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1306023181}
+  - component: {fileID: 1306023182}
   m_Layer: 0
   m_Name: Tile_6
   m_TagString: Untagged
@@ -4587,6 +5309,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1306023182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1306023180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &1330639384
 GameObject:
   m_ObjectHideFlags: 0
@@ -4596,6 +5334,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1330639385}
+  - component: {fileID: 1330639386}
   m_Layer: 0
   m_Name: Tile_12
   m_TagString: Untagged
@@ -4618,6 +5357,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1330639386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1330639384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &1348054263
 GameObject:
   m_ObjectHideFlags: 0
@@ -4748,6 +5503,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1366026825}
+  - component: {fileID: 1366026826}
   m_Layer: 0
   m_Name: Tile_24
   m_TagString: Untagged
@@ -4770,6 +5526,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1366026826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1366026824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &1373736108
 GameObject:
   m_ObjectHideFlags: 0
@@ -4810,6 +5582,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1375871008}
+  - component: {fileID: 1375871009}
   m_Layer: 0
   m_Name: Tile_58
   m_TagString: Untagged
@@ -4832,6 +5605,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 359136369}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1375871009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1375871007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!4 &1400109877 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2452481436985193626, guid: 03cb8e476fe6d1c46a0dbc31a9829195, type: 3}
@@ -4846,6 +5635,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1412533705}
+  - component: {fileID: 1412533706}
   m_Layer: 0
   m_Name: Tile_Green_Finish
   m_TagString: Untagged
@@ -4868,6 +5658,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 427055427}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1412533706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1412533704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.2
+  crowdExpand: 1.12
 --- !u!1 &1412656701
 GameObject:
   m_ObjectHideFlags: 0
@@ -4877,6 +5683,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1412656702}
+  - component: {fileID: 1412656703}
   m_Layer: 0
   m_Name: Tile_32
   m_TagString: Untagged
@@ -4899,6 +5706,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1412656703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1412656701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!4 &1427324037 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5441488672721922627, guid: 29d02a6a4a1582444b6c0a66c32eac41, type: 3}
@@ -5078,6 +5901,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1439968897}
+  - component: {fileID: 1439968898}
   m_Layer: 0
   m_Name: Tile_49
   m_TagString: Untagged
@@ -5100,6 +5924,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1190101330}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1439968898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439968896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &1445979515
 GameObject:
   m_ObjectHideFlags: 0
@@ -5109,6 +5949,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1445979516}
+  - component: {fileID: 1445979517}
   m_Layer: 0
   m_Name: Tile_31
   m_TagString: Untagged
@@ -5131,6 +5972,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1445979517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1445979515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &1449879886
 GameObject:
   m_ObjectHideFlags: 0
@@ -5141,7 +5998,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1449879888}
   - component: {fileID: 1449879887}
-  - component: {fileID: 1449879890}
   - component: {fileID: 1449879893}
   - component: {fileID: 1449879891}
   - component: {fileID: 1449879894}
@@ -5187,23 +6043,10 @@ Transform:
   m_LocalPosition: {x: -2209.96, y: -0, z: 8029.95}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 217141124}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1449879890
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1449879886}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ef5fdc43f17cde4ba0c5ae072ce6051, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PawnMover
-  tilePath: {fileID: 1449879893}
-  stepDuration: 0.15
 --- !u!114 &1449879891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5278,6 +6121,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TurnManager
   dice: {fileID: 1449879887}
   mover: {fileID: 217141123}
+  tilePath: {fileID: 1449879893}
+  safeStarRingTiles: []
   turnImage: {fileID: 289780547}
   redTurnSprite: {fileID: 21300000, guid: 10c52753bc4c86049b831701f954546b, type: 3}
   greenTurnSprite: {fileID: 21300000, guid: 86f48666d7e961e41ba3cdbfcc7f097f, type: 3}
@@ -5473,6 +6318,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1463495517}
+  - component: {fileID: 1463495518}
   m_Layer: 0
   m_Name: Tile_39
   m_TagString: Untagged
@@ -5495,6 +6341,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1463495518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1463495516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &1471467766
 GameObject:
   m_ObjectHideFlags: 0
@@ -5504,6 +6366,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1471467767}
+  - component: {fileID: 1471467768}
   m_Layer: 0
   m_Name: Tile_54
   m_TagString: Untagged
@@ -5526,6 +6389,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 478564701}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1471467768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471467766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &1473391394
 GameObject:
   m_ObjectHideFlags: 0
@@ -5601,6 +6480,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1493825140}
+  - component: {fileID: 1493825141}
   m_Layer: 0
   m_Name: Tile_38
   m_TagString: Untagged
@@ -5623,6 +6503,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1493825141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1493825139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &1495568460
 GameObject:
   m_ObjectHideFlags: 0
@@ -5632,6 +6528,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1495568461}
+  - component: {fileID: 1495568462}
   m_Layer: 0
   m_Name: Tile_51
   m_TagString: Untagged
@@ -5654,6 +6551,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1190101330}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1495568462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495568460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &1505068581
 GameObject:
   m_ObjectHideFlags: 0
@@ -5663,6 +6576,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1505068582}
+  - component: {fileID: 1505068583}
   m_Layer: 0
   m_Name: Tile_Red_Finish
   m_TagString: Untagged
@@ -5685,6 +6599,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 427055427}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1505068583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1505068581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.2
+  crowdExpand: 1.12
 --- !u!1 &1505283506
 GameObject:
   m_ObjectHideFlags: 0
@@ -5694,6 +6624,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1505283507}
+  - component: {fileID: 1505283508}
   m_Layer: 0
   m_Name: Tile_17
   m_TagString: Untagged
@@ -5716,6 +6647,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1505283508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1505283506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &1506810731
 GameObject:
   m_ObjectHideFlags: 0
@@ -5756,6 +6703,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1514960163}
+  - component: {fileID: 1514960164}
   m_Layer: 0
   m_Name: Tile_18
   m_TagString: Untagged
@@ -5777,6 +6725,57 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 983522727}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1514960164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1514960162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
+--- !u!1 &1575614850
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1575614851}
+  m_Layer: 0
+  m_Name: Decorations
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1575614851
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1575614850}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2209.8953, y: 0, z: 8030.668}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1924691571}
+  - {fileID: 195312204}
+  - {fileID: 257523227}
+  - {fileID: 1777058108}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1577096038
 GameObject:
@@ -5866,6 +6865,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1584948782}
+  - component: {fileID: 1584948783}
   m_Layer: 0
   m_Name: Tile_8
   m_TagString: Untagged
@@ -5888,6 +6888,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1584948783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1584948781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &1613990465
 GameObject:
   m_ObjectHideFlags: 0
@@ -5897,6 +6913,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1613990466}
+  - component: {fileID: 1613990467}
   m_Layer: 0
   m_Name: Tile_13
   m_TagString: Untagged
@@ -5919,6 +6936,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1613990467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1613990465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &1628064180
 GameObject:
   m_ObjectHideFlags: 0
@@ -5928,6 +6961,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1628064181}
+  - component: {fileID: 1628064182}
   m_Layer: 0
   m_Name: Tile_45
   m_TagString: Untagged
@@ -5950,6 +6984,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 778176984}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1628064182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1628064180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &1644681235
 GameObject:
   m_ObjectHideFlags: 0
@@ -6200,6 +7250,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1705561255}
+  - component: {fileID: 1705561256}
   m_Layer: 0
   m_Name: Tile_52
   m_TagString: Untagged
@@ -6222,6 +7273,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 478564701}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1705561256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1705561254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &1726006197
 GameObject:
   m_ObjectHideFlags: 0
@@ -6231,6 +7298,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1726006198}
+  - component: {fileID: 1726006199}
   m_Layer: 0
   m_Name: Tile_57
   m_TagString: Untagged
@@ -6253,6 +7321,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 359136369}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1726006199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1726006197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &1728790645 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8531572306158138433, guid: 4fa7a1ee213a3a240a0d29014f79b18d, type: 3}
@@ -6326,6 +7410,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1751705465}
+  - component: {fileID: 1751705466}
   m_Layer: 0
   m_Name: Tile_16
   m_TagString: Untagged
@@ -6348,6 +7433,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1751705466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751705464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &1752715041
 GameObject:
   m_ObjectHideFlags: 0
@@ -6386,6 +7487,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!4 &1777058108 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -3453340161848835122, guid: cb7a467439979e641bbdcb78441ec7c6, type: 3}
+  m_PrefabInstance: {fileID: 2016888061}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1802620461
 GameObject:
   m_ObjectHideFlags: 0
@@ -6532,6 +7638,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1855428310}
+  - component: {fileID: 1855428311}
   m_Layer: 0
   m_Name: Tile_9
   m_TagString: Untagged
@@ -6554,6 +7661,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1855428311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1855428309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &1872749154
 GameObject:
   m_ObjectHideFlags: 0
@@ -6594,6 +7717,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1881407380}
+  - component: {fileID: 1881407381}
   m_Layer: 0
   m_Name: Tile_26
   m_TagString: Untagged
@@ -6616,13 +7740,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1881407381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1881407379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1001 &1899577603
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1575614851}
     m_Modifications:
     - target: {fileID: 8128668236925612103, guid: 82ce5aa39a68a5a4b863deca422b9162, type: 3}
       propertyPath: m_Name
@@ -6642,7 +7782,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: 82ce5aa39a68a5a4b863deca422b9162, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2203.55
+      value: 6.345215
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: 82ce5aa39a68a5a4b863deca422b9162, type: 3}
       propertyPath: m_LocalPosition.y
@@ -6650,7 +7790,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: 82ce5aa39a68a5a4b863deca422b9162, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8024.23
+      value: -6.4379883
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: 82ce5aa39a68a5a4b863deca422b9162, type: 3}
       propertyPath: m_LocalRotation.w
@@ -6698,6 +7838,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1900785699}
+  - component: {fileID: 1900785700}
   m_Layer: 0
   m_Name: Tile_23
   m_TagString: Untagged
@@ -6720,10 +7861,31 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1900785700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1900785698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &1913304642 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8099157961587125364, guid: 9dc61c019f17d1145871a786dba67eb5, type: 3}
   m_PrefabInstance: {fileID: 6269858942831879737}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1924691571 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -3453340161848835122, guid: 7fb70515ebcb34e4dacb0cf0d55515dd, type: 3}
+  m_PrefabInstance: {fileID: 1017746808}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1959491771
 GameObject:
@@ -6950,6 +8112,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1983513953}
+  - component: {fileID: 1983513954}
   m_Layer: 0
   m_Name: Tile_48
   m_TagString: Untagged
@@ -6972,6 +8135,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1190101330}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1983513954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1983513952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &2013570895
 GameObject:
   m_ObjectHideFlags: 0
@@ -7164,17 +8343,22 @@ Transform:
   - {fileID: 1678092355}
   m_Father: {fileID: 1486911327}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &2016194067 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8897093224900880590, guid: a217108ce33b53243b58707e4f13be8a, type: 3}
+  m_PrefabInstance: {fileID: 701018720}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2016888061
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1575614851}
     m_Modifications:
     - target: {fileID: -3453340161848835122, guid: cb7a467439979e641bbdcb78441ec7c6, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.001
+      value: 0.0009999999
       objectReference: {fileID: 0}
     - target: {fileID: -3453340161848835122, guid: cb7a467439979e641bbdcb78441ec7c6, type: 3}
       propertyPath: m_LocalScale.y
@@ -7182,11 +8366,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3453340161848835122, guid: cb7a467439979e641bbdcb78441ec7c6, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.001
+      value: 0.0009999999
       objectReference: {fileID: 0}
     - target: {fileID: -3453340161848835122, guid: cb7a467439979e641bbdcb78441ec7c6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2216.06
+      value: -6.164795
       objectReference: {fileID: 0}
     - target: {fileID: -3453340161848835122, guid: cb7a467439979e641bbdcb78441ec7c6, type: 3}
       propertyPath: m_LocalPosition.y
@@ -7194,7 +8378,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3453340161848835122, guid: cb7a467439979e641bbdcb78441ec7c6, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8035.93
+      value: 5.262207
       objectReference: {fileID: 0}
     - target: {fileID: -3453340161848835122, guid: cb7a467439979e641bbdcb78441ec7c6, type: 3}
       propertyPath: m_LocalRotation.w
@@ -7202,7 +8386,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3453340161848835122, guid: cb7a467439979e641bbdcb78441ec7c6, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -3453340161848835122, guid: cb7a467439979e641bbdcb78441ec7c6, type: 3}
       propertyPath: m_LocalRotation.y
@@ -7210,7 +8394,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3453340161848835122, guid: cb7a467439979e641bbdcb78441ec7c6, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -3453340161848835122, guid: cb7a467439979e641bbdcb78441ec7c6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -7472,6 +8656,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2138643778}
+  - component: {fileID: 2138643779}
   m_Layer: 0
   m_Name: Tile_14
   m_TagString: Untagged
@@ -7494,6 +8679,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2138643779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2138643777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1 &2141721057
 GameObject:
   m_ObjectHideFlags: 0
@@ -7503,6 +8704,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2141721058}
+  - component: {fileID: 2141721059}
   m_Layer: 0
   m_Name: Tile_0
   m_TagString: Untagged
@@ -7525,6 +8727,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 983522727}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2141721059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2141721057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924ed7b67ddf3364d99c1a1214eeb98f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileAnchor
+  baseOffset: 0.14
+  height: 0.02
+  pawnRadiusMultiplier: 1.1
+  crowdExpand: 1.12
 --- !u!1001 &1492408863050251591
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8544,12 +9762,5 @@ SceneRoots:
   - {fileID: 2111526816}
   - {fileID: 1449879888}
   - {fileID: 431494517}
-  - {fileID: 1017746808}
-  - {fileID: 1899577603}
-  - {fileID: 1285074427}
-  - {fileID: 2016888061}
-  - {fileID: 258368096}
-  - {fileID: 134602532}
-  - {fileID: 783252965}
-  - {fileID: 701018720}
-  - {fileID: 217141124}
+  - {fileID: 1575614851}
+  - {fileID: 1070560527}

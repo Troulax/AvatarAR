@@ -61,11 +61,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\TurnManager.cs" />
+    <Compile Include="Assets\Scripts\TilesRoot.cs" />
     <Compile Include="Assets\Scripts\Pawn.cs" />
     <Compile Include="Assets\Scripts\MainMenu.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\TilePath.cs" />
     <Compile Include="Assets\Scripts\DiceRollerUI.cs" />
+    <Compile Include="Assets\Scripts\TileAnchor.cs" />
     <Compile Include="Assets\Scripts\PawnSelection.cs" />
     <Compile Include="Assets\Scripts\HumanPawnSelector.cs" />
     <Compile Include="Assets\Scripts\PawnMover.cs" />
