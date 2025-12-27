@@ -17,7 +17,7 @@ public class TeamPath
 public class TilePath : MonoBehaviour
 {
     [Header("Ring Path")]
-    [SerializeField] private Transform ringTilesParent; // <-- ringTiles objesi
+    [SerializeField] private Transform ringTilesParent;
     public List<Transform> RingTiles { get; private set; }
 
     [Header("Team Paths")]

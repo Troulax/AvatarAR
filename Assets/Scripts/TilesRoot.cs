@@ -27,7 +27,6 @@ public class TilesRoot : MonoBehaviour
     {
         if (parent == null) return;
 
-        // parent'ın kendisini tile saymıyoruz; child tile objelerini geziyoruz
         for (int i = 0; i < parent.childCount; i++)
         {
             var child = parent.GetChild(i);
@@ -43,7 +42,6 @@ public class TilesRoot : MonoBehaviour
         if (anchor == null)
             anchor = tile.gameObject.AddComponent<TileAnchor>();
 
-        // default değerleri setle
         anchor.SetDefaults(offset, height);
     }
 }

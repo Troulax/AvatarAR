@@ -6,8 +6,8 @@ using UnityEngine.InputSystem;
 public class PawnSelection : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private Camera rayCamera;          // AR Camera / Main Camera
-    [SerializeField] private TurnManager turnManager;   // GameManager üzerindeki TurnManager
+    [SerializeField] private Camera rayCamera;    
+    [SerializeField] private TurnManager turnManager;  
 
     private Pawn selectedPawn;
 
@@ -18,8 +18,10 @@ public class PawnSelection : MonoBehaviour
         Vector2? screenPos = GetPointerDownPosition();
         if (screenPos == null) return;
 
-        // UI üstüne tıklanıyorsa pawn seçme (butonla çakışmasın)
         if (IsPointerOverUI(screenPos.Value))
+            return;
+
+        if (!turnManager.IsHumanTurn)
             return;
 
         Ray ray = rayCamera.ScreenPointToRay(screenPos.Value);
@@ -28,9 +30,8 @@ public class PawnSelection : MonoBehaviour
             Pawn pawn = hit.collider.GetComponentInParent<Pawn>();
             if (pawn == null) return;
 
-            // Sadece RED human seçebilsin
-            if (!turnManager.IsHumanTurn) return;
-            if (pawn.team != TeamColor.Red) return;
+            if (!pawn.IsSelectable)
+                return;
 
             selectedPawn = pawn;
             turnManager.SetHumanSelectedPawn(selectedPawn);
@@ -41,14 +42,12 @@ public class PawnSelection : MonoBehaviour
 
     private Vector2? GetPointerDownPosition()
     {
-        // Mobil dokunma
         if (Touchscreen.current != null &&
             Touchscreen.current.primaryTouch.press.wasPressedThisFrame)
         {
             return Touchscreen.current.primaryTouch.position.ReadValue();
         }
 
-        // Editor / PC mouse
         if (Mouse.current != null &&
             Mouse.current.leftButton.wasPressedThisFrame)
         {

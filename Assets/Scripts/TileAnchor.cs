@@ -56,17 +56,14 @@ public class TileAnchor : MonoBehaviour
         Vector3 center = transform.position + Vector3.up * height;
 
         float off = Mathf.Max(baseOffset, EstimatePawnBasedOffset(pawnTf));
-        // kalabalık oldukça biraz daha aç
         if (count >= 3)
             off *= Mathf.Pow(crowdExpand, count - 2);
 
-        // 1–4 için sabit slotlar (çapraz/köşeler)
         if (count == 1)
             return center;
 
         if (count == 2)
         {
-            // çaprazı biraz daha “geniş” yapıyoruz
             Vector3 a = new Vector3(-off, 0, +off);
             Vector3 b = new Vector3(+off, 0, -off);
             return center + (index == 0 ? a : b);
@@ -95,7 +92,6 @@ public class TileAnchor : MonoBehaviour
             return center + s[index];
         }
 
-        // 5+ olursa daireye diz
         float radius = off * 1.35f;
         float angle = (Mathf.PI * 2f) * (index / (float)count);
         return center + new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * radius;
@@ -105,17 +101,14 @@ public class TileAnchor : MonoBehaviour
     {
         if (pawnTf == null) return 0f;
 
-        // 1) Collider varsa onu kullan
         var col = pawnTf.GetComponentInChildren<Collider>();
         if (col != null)
         {
-            // bounds extents: yarı boyut
             float r = Mathf.Max(col.bounds.extents.x, col.bounds.extents.z);
             if (r > 0.0001f)
                 return r * pawnRadiusMultiplier;
         }
 
-        // 2) Renderer varsa onu kullan
         var rend = pawnTf.GetComponentInChildren<Renderer>();
         if (rend != null)
         {

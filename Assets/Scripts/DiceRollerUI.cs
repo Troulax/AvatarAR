@@ -49,7 +49,6 @@ public class DiceRollerUI : MonoBehaviour
         onResult?.Invoke(CurrentValue);
 
         IsRolling = false;
-        // Butonun tekrar açılıp açılmayacağına TurnManager karar verecek
     }
 
     private void SetDiceFace(int value)

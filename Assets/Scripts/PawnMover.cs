@@ -22,12 +22,11 @@ public class PawnMover : MonoBehaviour
     [Tooltip("Capture animasyonu bittikten sonra tur devam etmeden önce beklenecek süre (sn).")]
     [SerializeField] private float delayAfterCaptureSeconds = 1f;
 
-    // Pawn.cs'e dokunmadan "hangi tile anchor'da duruyor?" bilgisini tutuyoruz
     private readonly Dictionary<Pawn, TileAnchor> currentAnchorByPawn = new();
 
-    // Start pozisyon cache
+    // Start position cache
     private readonly Dictionary<Pawn, Vector3> startPosByPawn = new();
-    private readonly Dictionary<Pawn, Quaternion> startRotByPawn = new(); // (şimdilik kullanılmıyor ama dursun)
+    private readonly Dictionary<Pawn, Quaternion> startRotByPawn = new();
 
     // Safe star ringIndex cache
     private readonly HashSet<int> safeStarRingIndices = new();
@@ -35,14 +34,12 @@ public class PawnMover : MonoBehaviour
     private void Awake()
     {
         CacheAllPawnStartPositions();
-        RebuildSafeStarIndexCache(); // runtime'da RingTiles dolu olmalı
+        RebuildSafeStarIndexCache();
     }
 
 #if UNITY_EDITOR
     private void OnValidate()
     {
-        // Editörde TilePath.Awake çalışmadığı için RingTiles boş olabilir.
-        // Rebuild metodu artık boşken warning basmadan çıkacak.
         RebuildSafeStarIndexCache();
     }
 #endif
@@ -66,9 +63,6 @@ public class PawnMover : MonoBehaviour
 
         if (tilePath == null) return;
 
-        // ✅ ÖNEMLİ FIX:
-        // Editörde OnValidate çalıştığında TilePath.Awake çalışmadığı için RingTiles boş olabilir.
-        // Bu durumda eşleştirme yapmaya çalışmak yanlış; warning spam üretir.
         if (tilePath.RingTiles == null || tilePath.RingTiles.Count == 0)
             return;
 
@@ -77,10 +71,8 @@ public class PawnMover : MonoBehaviour
             Transform starTf = safeStarRingTiles[i];
             if (starTf == null) continue;
 
-            // 1) Önce aynı Transform referansını ara
             int idx = tilePath.RingTiles.IndexOf(starTf);
 
-            // 2) Bulunamazsa: isimle eşle (parent/child farklı seçilmiş olabilir)
             if (idx < 0)
             {
                 string starName = starTf.name;
@@ -118,27 +110,23 @@ public class PawnMover : MonoBehaviour
         if (tilePath.RingTiles == null || tilePath.RingTiles.Count == 0) yield break;
         if (pawn.HasFinished) yield break;
 
-        // Sonradan instantiate edilen pawn güvenliği
         if (!startPosByPawn.ContainsKey(pawn))
         {
             startPosByPawn[pawn] = pawn.transform.position;
             startRotByPawn[pawn] = pawn.transform.rotation;
         }
-
-        // Runtime'da index cache boş kaldıysa tekrar dene
+ 
         if (safeStarRingIndices.Count == 0 && safeStarRingTiles.Count > 0)
             RebuildSafeStarIndexCache();
 
         TeamPath teamPath = tilePath.GetTeamPath(pawn.team);
         int ringCount = tilePath.RingTiles.Count;
 
-        // Glitch fix: Hareket başında anchor'dan çıkar
         UnregisterPawnFromAnchor(pawn);
 
         int remainingSteps = steps;
         Transform finalTile = null;
 
-        // START -> RING (6)
         if (pawn.IsInStart)
         {
             if (steps != 6) yield break;
@@ -148,13 +136,11 @@ public class PawnMover : MonoBehaviour
 
             yield return MoveTo(finalTile, pawn);
 
-            // Capture + final anchor
             yield return TryCaptureOnFinalTileAnimated(pawn);
             RegisterPawnOnFinalTile(pawn, finalTile);
             yield break;
         }
 
-        // RING
         if (pawn.IsOnRing)
         {
             int entryIndex = (teamPath.startIndexOnRing - 2 + ringCount) % ringCount;
@@ -191,7 +177,6 @@ public class PawnMover : MonoBehaviour
             }
         }
 
-        // SAFE ZONE (capture yok)
         if (pawn.IsInSafeZone)
         {
             int finishStepIndex = teamPath.safeZoneTiles.Length;
@@ -225,10 +210,8 @@ public class PawnMover : MonoBehaviour
             }
         }
 
-        // Ring'de bitti ise capture dene
         yield return TryCaptureOnFinalTileAnimated(pawn);
 
-        // Final tile’a anchor
         RegisterPawnOnFinalTile(pawn, finalTile);
     }
 
@@ -260,7 +243,6 @@ public class PawnMover : MonoBehaviour
 
         int targetRingIndex = moverPawn.ringIndex;
 
-        // Güvenli yıldızda capture yok
         if (IsSafeStarIndex(targetRingIndex))
             yield break;
 
@@ -276,10 +258,8 @@ public class PawnMover : MonoBehaviour
             if (other.HasFinished) continue;
             if (other.ringIndex != targetRingIndex) continue;
 
-            // Capture bulundu -> animasyonla start'a gönder
             yield return CapturePawnToStartAnimated(other);
 
-            // ✅ Capture sonrası ekstra bekleme
             if (delayAfterCaptureSeconds > 0f)
                 yield return new WaitForSeconds(delayAfterCaptureSeconds);
 
@@ -291,10 +271,8 @@ public class PawnMover : MonoBehaviour
     {
         if (capturedPawn == null) yield break;
 
-        // Anchor'dan çıkar
         UnregisterPawnFromAnchor(capturedPawn);
 
-        // Mantıksal state: start'a döndü
         capturedPawn.ringIndex = -1;
         capturedPawn.safeIndex = -1;
 
@@ -310,7 +288,6 @@ public class PawnMover : MonoBehaviour
         Vector3 originalScale = capturedPawn.transform.localScale;
         Vector3 shrinkScale = originalScale * Mathf.Max(0.05f, captureShrinkScale);
 
-        // 1) Pop + shrink
         float t = 0f;
         while (t < 1f)
         {
@@ -320,7 +297,6 @@ public class PawnMover : MonoBehaviour
             yield return null;
         }
 
-        // 2) Start'a smooth git (yüksekte)
         Vector3 endPos = startPos + Vector3.up * capturePopHeight;
 
         t = 0f;
@@ -331,7 +307,6 @@ public class PawnMover : MonoBehaviour
             yield return null;
         }
 
-        // 3) Start'a indir + scale geri
         capturedPawn.transform.position = startPos;
 
         t = 0f;
@@ -354,7 +329,6 @@ public class PawnMover : MonoBehaviour
         TileAnchor newAnchor = finalTileTransform.GetComponent<TileAnchor>();
         if (newAnchor == null) return;
 
-        // Güvenlik: Eski anchor'dan çıkar (normalde zaten Unregister yaptık)
         if (currentAnchorByPawn.TryGetValue(pawn, out TileAnchor oldAnchor))
         {
             if (oldAnchor != null && oldAnchor != newAnchor)

@@ -39,6 +39,37 @@ public class TurnManager : MonoBehaviour
     [Tooltip("Botlardan biri kazanırsa aktif olacak ekran.")]
     [SerializeField] private GameObject loseScreen;
 
+    [Header("Team Selecting UI")]
+    [Tooltip("TeamSelecting panel objesi (Earth/Fire/Air/Water butonları burada).")]
+    [SerializeField] private GameObject teamSelectingPanel;
+
+    [Header("Game UI Objects (disabled until team selected)")]
+    [Tooltip("GameScreen başlarken kapalı olacak; human team seçince açılacak objeler.")]
+    [SerializeField] private GameObject rollButtonObject;
+    [SerializeField] private GameObject turnImageObject;
+    [SerializeField] private GameObject settingsButtonObject;
+    [SerializeField] private GameObject playerImageObject;
+    [SerializeField] private GameObject boardBaseObject;
+
+    [Tooltip("GameScreen başlarken kapalı olacak; human team seçince açılacak dekor objesi.")]
+    [SerializeField] private GameObject decorationsObject;
+
+    [Header("Player Image")]
+    [Tooltip("PlayerImage UI objesinin Image component'i. (playerImageObject üstünde veya child'ında olabilir; buraya doğru Image'ı sürükle)")]
+    [SerializeField] private Image playerImage;
+
+    [Tooltip("Fire seçilince kullanılacak sprite (fire_player).")]
+    [SerializeField] private Sprite firePlayerSprite;
+
+    [Tooltip("Earth seçilince kullanılacak sprite (earth_player).")]
+    [SerializeField] private Sprite earthPlayerSprite;
+
+    [Tooltip("Air seçilince kullanılacak sprite (air_player).")]
+    [SerializeField] private Sprite airPlayerSprite;
+
+    [Tooltip("Water seçilince kullanılacak sprite (water_player).")]
+    [SerializeField] private Sprite waterPlayerSprite;
+
     [Header("Teams Order")]
     [SerializeField] private TeamColor[] turnOrder = new[]
     {
@@ -55,7 +86,7 @@ public class TurnManager : MonoBehaviour
     [Tooltip("İnsan oyuncu açık mı? (1 insan 3 bot senaryosunda true)")]
     [SerializeField] private bool enableHuman = true;
 
-    [Tooltip("İnsan oyuncunun takımı. (Şimdilik Inspector'dan; ileride UI'dan değiştirilebilir)")]
+    [Tooltip("İnsan oyuncunun takımı. TeamSelecting seçiminden sonra set edilir.")]
     [SerializeField] private TeamColor humanTeam = TeamColor.Red;
 
     private int turnIndex = 0;
@@ -71,29 +102,121 @@ public class TurnManager : MonoBehaviour
     // Bot AI safe star cache (ring indices)
     private readonly HashSet<int> safeStarRingIndices = new();
 
-    // Game end
+    // Game state
     private bool gameEnded = false;
+    private bool gameStarted = false; // team seçilmeden oyun başlamaz
 
     public TeamColor CurrentTeam => turnOrder[turnIndex];
-    public bool IsHumanTurn => enableHuman && CurrentTeam == humanTeam;
+    public bool IsHumanTurn => gameStarted && enableHuman && CurrentTeam == humanTeam;
 
     private void Start()
     {
-        // End screens default kapalı
         if (winScreen != null) winScreen.SetActive(false);
         if (loseScreen != null) loseScreen.SetActive(false);
 
-        // Eğer insan takımı turnOrder içinde varsa, oradan başlatmak daha tutarlı
-        int humanIdx = System.Array.IndexOf(turnOrder, humanTeam);
-        turnIndex = humanIdx >= 0 ? humanIdx : 0;
+        gameEnded = false;
+        gameStarted = false;
+
+        if (teamSelectingPanel != null) teamSelectingPanel.SetActive(true);
+        SetGameUIActive(false);
+
+        if (dice != null) dice.SetRollButtonInteractable(false);
+
+        ClearAllSelectableFlags();
+        BuildSafeStarIndexCache();
+    }
+
+    private void SetGameUIActive(bool active)
+    {
+        if (rollButtonObject != null) rollButtonObject.SetActive(active);
+        if (turnImageObject != null) turnImageObject.SetActive(active);
+        if (settingsButtonObject != null) settingsButtonObject.SetActive(active);
+        if (playerImageObject != null) playerImageObject.SetActive(active);
+        if (boardBaseObject != null) boardBaseObject.SetActive(active);
+        if (decorationsObject != null) decorationsObject.SetActive(active);
+    }
+
+    // -------------------------
+    // TEAM SELECT BUTTON HOOKS
+    // -------------------------
+    // Mapping:
+    // Fire  = Red
+    // Earth = Green
+    // Water = Blue
+    // Air   = Yellow
+    public void SelectEarth() => StartGameWithHumanElement(Element.Earth);
+    public void SelectFire()  => StartGameWithHumanElement(Element.Fire);
+    public void SelectWater() => StartGameWithHumanElement(Element.Water);
+    public void SelectAir()   => StartGameWithHumanElement(Element.Air);
+
+    private enum Element { Fire, Earth, Air, Water }
+
+    private void StartGameWithHumanElement(Element element)
+    {
+        // Element -> Team
+        TeamColor team = element switch
+        {
+            Element.Fire => TeamColor.Red,
+            Element.Earth => TeamColor.Green,
+            Element.Water => TeamColor.Blue,
+            Element.Air => TeamColor.Yellow,
+            _ => TeamColor.Red
+        };
+
+        // Element -> Player sprite
+        Sprite sprite = element switch
+        {
+            Element.Fire => firePlayerSprite,
+            Element.Earth => earthPlayerSprite,
+            Element.Water => waterPlayerSprite,
+            Element.Air => airPlayerSprite,
+            _ => null
+        };
+
+        StartGameWithHumanTeam(team, sprite);
+    }
+
+    /// <summary>
+    /// TeamSelecting sonrası çağrılır. Oyunu başlatır.
+    /// </summary>
+    private void StartGameWithHumanTeam(TeamColor selectedTeam, Sprite selectedPlayerSprite)
+    {
+        if (gameEnded) return;
+        if (gameStarted) return;
+
+        enableHuman = true;
+        humanTeam = selectedTeam;
+
+        if (playerImage != null && selectedPlayerSprite != null)
+            playerImage.sprite = selectedPlayerSprite;
+
+        if (teamSelectingPanel != null) teamSelectingPanel.SetActive(false);
+        SetGameUIActive(true);
+
+        int idx = System.Array.IndexOf(turnOrder, humanTeam);
+        turnIndex = idx >= 0 ? idx : 0;
+
+        turnInProgress = false;
+        humanSelectablePawns.Clear();
+        humanSelectedPawn = null;
+        lastHumanRoll = 0;
+        humanPhase = HumanPhase.WaitingRoll;
+        humanExtraRollPending = false;
 
         UpdateTurnUI();
         ClearAllSelectableFlags();
-        BuildSafeStarIndexCache();
+
+        gameStarted = true;
+
+        if (dice != null)
+            dice.SetRollButtonInteractable(IsHumanTurn && humanPhase == HumanPhase.WaitingRoll);
 
         StartCoroutine(TurnLoop());
     }
 
+    // -------------------------
+    // SAFE STAR CACHE
+    // -------------------------
     private void BuildSafeStarIndexCache()
     {
         safeStarRingIndices.Clear();
@@ -111,10 +234,12 @@ public class TurnManager : MonoBehaviour
 
     private bool IsSafeStarIndex(int ringIndex) => safeStarRingIndices.Contains(ringIndex);
 
-    // UI / PawnSelection burayı çağırır
+    // -------------------------
+    // HUMAN INPUT
+    // -------------------------
     public void SetHumanSelectedPawn(Pawn pawn)
     {
-        if (gameEnded) return;
+        if (!gameStarted || gameEnded) return;
 
         if (!IsHumanTurn) return;
         if (pawn == null || pawn.team != humanTeam) return;
@@ -125,10 +250,9 @@ public class TurnManager : MonoBehaviour
         Debug.Log("Human selected pawn: " + pawn.name);
     }
 
-    // RollDiceButton OnClick -> burası
     public void OnHumanPressedRoll()
     {
-        if (gameEnded) return;
+        if (!gameStarted || gameEnded) return;
 
         if (!IsHumanTurn) return;
         if (turnInProgress) return;
@@ -138,10 +262,19 @@ public class TurnManager : MonoBehaviour
         StartCoroutine(PlaySingleTurnForHuman());
     }
 
+    // -------------------------
+    // MAIN TURN LOOP
+    // -------------------------
     private IEnumerator TurnLoop()
     {
         while (!gameEnded)
         {
+            if (!gameStarted)
+            {
+                yield return null;
+                continue;
+            }
+
             if (IsHumanTurn)
             {
                 dice.SetRollButtonInteractable(humanPhase == HumanPhase.WaitingRoll);
@@ -189,7 +322,6 @@ public class TurnManager : MonoBehaviour
         humanPhase = HumanPhase.WaitingRoll;
         humanExtraRollPending = false;
 
-        // safe star cache runtime’da boş kaldıysa tekrar dene
         if (safeStarRingIndices.Count == 0 && safeStarRingTiles.Count > 0)
             BuildSafeStarIndexCache();
     }
@@ -239,8 +371,6 @@ public class TurnManager : MonoBehaviour
             turnInProgress = false;
             yield break;
         }
-
-        // 6 değilse ve tek oynanabilir pawn varsa otomatik seç
         if (lastHumanRoll != 6 && humanSelectablePawns.Count == 1)
         {
             humanSelectedPawn = humanSelectablePawns.First();
@@ -265,7 +395,6 @@ public class TurnManager : MonoBehaviour
 
         yield return mover.MoveSelectedPawnCoroutine(humanSelectedPawn, lastHumanRoll);
 
-        // ✅ Oyun bitti mi kontrol
         CheckEndGameAndHandle();
 
         if (!gameEnded)
@@ -322,9 +451,11 @@ public class TurnManager : MonoBehaviour
     {
         if (gameEnded) yield break;
 
+        if (enableHuman && team == humanTeam)
+            yield break;
+
         turnInProgress = true;
 
-        // Bot: 6 geldikçe otomatik devam
         bool extraTurn;
         do
         {
@@ -346,16 +477,12 @@ public class TurnManager : MonoBehaviour
 
             yield return mover.MoveSelectedPawnCoroutine(chosen, rolled);
 
-            // ✅ Oyun bitti mi kontrol
             CheckEndGameAndHandle();
             if (gameEnded) break;
 
             extraTurn = (rolled == 6);
             if (extraTurn)
-            {
-                // ✅ 6 sonrası da “tur arası” hissi
                 yield return new WaitForSeconds(turnDelaySeconds);
-            }
 
         } while (extraTurn);
 
@@ -364,11 +491,6 @@ public class TurnManager : MonoBehaviour
 
     private Pawn ChooseBotPawnSmart(TeamColor team, int rolled)
     {
-        // Eğer bu takım insanın takımıysa bot gibi davranmasın
-        if (enableHuman && team == humanTeam)
-            return null;
-
-        // TilePath yoksa fallback
         if (tilePath == null || tilePath.RingTiles == null || tilePath.RingTiles.Count == 0)
             return ChooseBotPawnFallback(team, rolled);
 
@@ -378,7 +500,6 @@ public class TurnManager : MonoBehaviour
         List<Pawn> myPawns = GetList(team);
         List<Pawn> enemyPawns = GetAllEnemyPawns(team);
 
-        // 1) Oynanabilir adaylar + simülasyon
         var candidates = new List<(Pawn pawn, SimResult sim)>();
 
         foreach (var p in myPawns)
@@ -395,13 +516,11 @@ public class TurnManager : MonoBehaviour
         if (candidates.Count == 0)
             return null;
 
-        // 2) CAPTURE önceliği (garanti)
+        // 1) CAPTURE önceliği
         var captureCandidates = new List<Pawn>();
         foreach (var c in candidates)
         {
             if (!c.sim.endsOnRing) continue;
-
-            // güvenli yıldız tile ise capture sayma
             if (IsSafeStarIndex(c.sim.ringIndex)) continue;
 
             bool hasEnemy = enemyPawns.Any(e => e != null && e.IsOnRing && !e.HasFinished && e.ringIndex == c.sim.ringIndex);
@@ -411,28 +530,21 @@ public class TurnManager : MonoBehaviour
 
         if (captureCandidates.Count > 0)
         {
-            // Birden çok varsa: en ileride olanı seç
             return captureCandidates
                 .OrderByDescending(p => GetProgressScore(p, teamPath, ringCount))
                 .First();
         }
 
-        // 3) 6 ise: mümkünse yeni pawn indir (start'tan)
+        // 2) 6 ise: start pawn
         if (rolled == 6)
         {
-            var startPawns = candidates
-                .Where(c => c.pawn.IsInStart)
-                .Select(c => c.pawn)
-                .ToList();
-
+            var startPawns = candidates.Where(c => c.pawn.IsInStart).Select(c => c.pawn).ToList();
             if (startPawns.Count > 0)
                 return startPawns[0];
         }
 
-        // 4) Diğer durum: en ilerideki pawn
-        return candidates
-            .OrderByDescending(c => GetProgressScore(c.pawn, teamPath, ringCount))
-            .First().pawn;
+        // 3) en ileride
+        return candidates.OrderByDescending(c => GetProgressScore(c.pawn, teamPath, ringCount)).First().pawn;
     }
 
     private Pawn ChooseBotPawnFallback(TeamColor team, int rolled)
@@ -453,7 +565,6 @@ public class TurnManager : MonoBehaviour
         SimResult r = new SimResult { canMove = false, endsOnRing = false, ringIndex = -1 };
         if (pawn == null || pawn.HasFinished) return r;
 
-        // Start
         if (pawn.IsInStart)
         {
             if (steps != 6) return r;
@@ -463,7 +574,6 @@ public class TurnManager : MonoBehaviour
             return r;
         }
 
-        // SafeZone
         if (pawn.IsInSafeZone)
         {
             int finishStepIndex = teamPath.safeZoneTiles.Length;
@@ -475,7 +585,6 @@ public class TurnManager : MonoBehaviour
             return r;
         }
 
-        // Ring
         if (pawn.IsOnRing)
         {
             int entryIndex = (teamPath.startIndexOnRing - 2 + ringCount) % ringCount;
@@ -497,12 +606,10 @@ public class TurnManager : MonoBehaviour
                 r.ringIndex = newIndex;
                 return r;
             }
-            else
-            {
-                r.canMove = true;
-                r.endsOnRing = false;
-                return r;
-            }
+
+            r.canMove = true;
+            r.endsOnRing = false;
+            return r;
         }
 
         return r;
@@ -556,7 +663,6 @@ public class TurnManager : MonoBehaviour
     {
         if (gameEnded) return;
 
-        // Her takım için "4 pawn finished" kontrolü
         if (IsTeamFinished(redPawns)) { EndGame(TeamColor.Red); return; }
         if (IsTeamFinished(greenPawns)) { EndGame(TeamColor.Green); return; }
         if (IsTeamFinished(bluePawns)) { EndGame(TeamColor.Blue); return; }
@@ -573,7 +679,6 @@ public class TurnManager : MonoBehaviour
     {
         gameEnded = true;
 
-        // Inputları kapat
         ClearAllSelectableFlags();
         humanSelectablePawns.Clear();
         humanSelectedPawn = null;
