@@ -33,6 +33,12 @@ public class TurnManager : MonoBehaviour
     [SerializeField] private Sprite yellowTurnSprite;
     [SerializeField] private float turnDelaySeconds = 2f;
 
+    [Header("End Game UI")]
+    [Tooltip("İnsan oyuncu kazanırsa aktif olacak ekran.")]
+    [SerializeField] private GameObject winScreen;
+    [Tooltip("Botlardan biri kazanırsa aktif olacak ekran.")]
+    [SerializeField] private GameObject loseScreen;
+
     [Header("Teams Order")]
     [SerializeField] private TeamColor[] turnOrder = new[]
     {
@@ -45,8 +51,12 @@ public class TurnManager : MonoBehaviour
     [SerializeField] private List<Pawn> bluePawns = new();
     [SerializeField] private List<Pawn> yellowPawns = new();
 
-    [Header("Config")]
-    [SerializeField] private bool redIsHuman = true;
+    [Header("Human Config")]
+    [Tooltip("İnsan oyuncu açık mı? (1 insan 3 bot senaryosunda true)")]
+    [SerializeField] private bool enableHuman = true;
+
+    [Tooltip("İnsan oyuncunun takımı. (Şimdilik Inspector'dan; ileride UI'dan değiştirilebilir)")]
+    [SerializeField] private TeamColor humanTeam = TeamColor.Red;
 
     private int turnIndex = 0;
     private bool turnInProgress = false;
@@ -61,13 +71,21 @@ public class TurnManager : MonoBehaviour
     // Bot AI safe star cache (ring indices)
     private readonly HashSet<int> safeStarRingIndices = new();
 
+    // Game end
+    private bool gameEnded = false;
+
     public TeamColor CurrentTeam => turnOrder[turnIndex];
-    public bool IsHumanTurn => redIsHuman && CurrentTeam == TeamColor.Red;
+    public bool IsHumanTurn => enableHuman && CurrentTeam == humanTeam;
 
     private void Start()
     {
-        int redIdx = System.Array.IndexOf(turnOrder, TeamColor.Red);
-        turnIndex = redIdx >= 0 ? redIdx : 0;
+        // End screens default kapalı
+        if (winScreen != null) winScreen.SetActive(false);
+        if (loseScreen != null) loseScreen.SetActive(false);
+
+        // Eğer insan takımı turnOrder içinde varsa, oradan başlatmak daha tutarlı
+        int humanIdx = System.Array.IndexOf(turnOrder, humanTeam);
+        turnIndex = humanIdx >= 0 ? humanIdx : 0;
 
         UpdateTurnUI();
         ClearAllSelectableFlags();
@@ -93,10 +111,13 @@ public class TurnManager : MonoBehaviour
 
     private bool IsSafeStarIndex(int ringIndex) => safeStarRingIndices.Contains(ringIndex);
 
+    // UI / PawnSelection burayı çağırır
     public void SetHumanSelectedPawn(Pawn pawn)
     {
+        if (gameEnded) return;
+
         if (!IsHumanTurn) return;
-        if (pawn == null || pawn.team != TeamColor.Red) return;
+        if (pawn == null || pawn.team != humanTeam) return;
         if (humanPhase != HumanPhase.ChoosingPawn) return;
         if (!humanSelectablePawns.Contains(pawn)) return;
 
@@ -104,8 +125,11 @@ public class TurnManager : MonoBehaviour
         Debug.Log("Human selected pawn: " + pawn.name);
     }
 
+    // RollDiceButton OnClick -> burası
     public void OnHumanPressedRoll()
     {
+        if (gameEnded) return;
+
         if (!IsHumanTurn) return;
         if (turnInProgress) return;
         if (dice != null && dice.IsRolling) return;
@@ -116,14 +140,16 @@ public class TurnManager : MonoBehaviour
 
     private IEnumerator TurnLoop()
     {
-        while (true)
+        while (!gameEnded)
         {
             if (IsHumanTurn)
             {
                 dice.SetRollButtonInteractable(humanPhase == HumanPhase.WaitingRoll);
 
-                while (!turnInProgress) yield return null;
-                while (turnInProgress) yield return null;
+                while (!turnInProgress && !gameEnded) yield return null;
+                while (turnInProgress && !gameEnded) yield return null;
+
+                if (gameEnded) yield break;
 
                 if (humanExtraRollPending)
                 {
@@ -137,6 +163,8 @@ public class TurnManager : MonoBehaviour
             {
                 dice.SetRollButtonInteractable(false);
                 yield return PlaySingleTurnForBot(CurrentTeam);
+
+                if (gameEnded) yield break;
             }
 
             yield return SwitchToNextTurnWithDelay();
@@ -145,7 +173,11 @@ public class TurnManager : MonoBehaviour
 
     private IEnumerator SwitchToNextTurnWithDelay()
     {
+        if (gameEnded) yield break;
+
         yield return new WaitForSeconds(turnDelaySeconds);
+
+        if (gameEnded) yield break;
 
         turnIndex = (turnIndex + 1) % turnOrder.Length;
         UpdateTurnUI();
@@ -180,12 +212,20 @@ public class TurnManager : MonoBehaviour
     // -------------------------
     private IEnumerator PlaySingleTurnForHuman()
     {
+        if (gameEnded) yield break;
+
         turnInProgress = true;
         humanPhase = HumanPhase.Moving;
         dice.SetRollButtonInteractable(false);
 
         lastHumanRoll = 0;
         yield return dice.RollDiceCoroutine(v => lastHumanRoll = v);
+
+        if (gameEnded)
+        {
+            turnInProgress = false;
+            yield break;
+        }
 
         BuildHumanSelectablePawns(lastHumanRoll);
 
@@ -210,8 +250,14 @@ public class TurnManager : MonoBehaviour
             humanSelectedPawn = null;
             humanPhase = HumanPhase.ChoosingPawn;
 
-            while (humanSelectedPawn == null)
+            while (humanSelectedPawn == null && !gameEnded)
                 yield return null;
+
+            if (gameEnded)
+            {
+                turnInProgress = false;
+                yield break;
+            }
         }
 
         humanPhase = HumanPhase.Moving;
@@ -219,7 +265,12 @@ public class TurnManager : MonoBehaviour
 
         yield return mover.MoveSelectedPawnCoroutine(humanSelectedPawn, lastHumanRoll);
 
-        humanExtraRollPending = (lastHumanRoll == 6);
+        // ✅ Oyun bitti mi kontrol
+        CheckEndGameAndHandle();
+
+        if (!gameEnded)
+            humanExtraRollPending = (lastHumanRoll == 6);
+
         turnInProgress = false;
     }
 
@@ -227,10 +278,12 @@ public class TurnManager : MonoBehaviour
     {
         humanSelectablePawns.Clear();
 
-        foreach (var p in redPawns)
+        var humanList = GetList(humanTeam);
+
+        foreach (var p in humanList)
             if (p != null) p.SetSelectable(false);
 
-        foreach (var pawn in redPawns)
+        foreach (var pawn in humanList)
         {
             if (pawn == null) continue;
             if (pawn.HasFinished) continue;
@@ -267,14 +320,20 @@ public class TurnManager : MonoBehaviour
 
     private IEnumerator PlaySingleTurnForBot(TeamColor team)
     {
+        if (gameEnded) yield break;
+
         turnInProgress = true;
 
         // Bot: 6 geldikçe otomatik devam
         bool extraTurn;
         do
         {
+            if (gameEnded) break;
+
             int rolled = 0;
             yield return dice.RollDiceCoroutine(v => rolled = v);
+
+            if (gameEnded) break;
 
             Pawn chosen = ChooseBotPawnSmart(team, rolled);
 
@@ -286,6 +345,10 @@ public class TurnManager : MonoBehaviour
             }
 
             yield return mover.MoveSelectedPawnCoroutine(chosen, rolled);
+
+            // ✅ Oyun bitti mi kontrol
+            CheckEndGameAndHandle();
+            if (gameEnded) break;
 
             extraTurn = (rolled == 6);
             if (extraTurn)
@@ -301,6 +364,10 @@ public class TurnManager : MonoBehaviour
 
     private Pawn ChooseBotPawnSmart(TeamColor team, int rolled)
     {
+        // Eğer bu takım insanın takımıysa bot gibi davranmasın
+        if (enableHuman && team == humanTeam)
+            return null;
+
         // TilePath yoksa fallback
         if (tilePath == null || tilePath.RingTiles == null || tilePath.RingTiles.Count == 0)
             return ChooseBotPawnFallback(team, rolled);
@@ -344,7 +411,7 @@ public class TurnManager : MonoBehaviour
 
         if (captureCandidates.Count > 0)
         {
-            // Birden çok varsa: en ileride olanı seçelim (genelde daha akıllı)
+            // Birden çok varsa: en ileride olanı seç
             return captureCandidates
                 .OrderByDescending(p => GetProgressScore(p, teamPath, ringCount))
                 .First();
@@ -359,14 +426,10 @@ public class TurnManager : MonoBehaviour
                 .ToList();
 
             if (startPawns.Count > 0)
-            {
-                // "hali hazırda oyunda pawn varken" yeni pawn indirsin; ama zaten startPawn seçmek genel olarak doğru.
-                // İstersen "board'da en az 1 pawn varsa" diye ekstra şart eklenebilir.
                 return startPawns[0];
-            }
         }
 
-        // 4) Diğer durum: en ilerideki pawn (oyunu zorlaştırır)
+        // 4) Diğer durum: en ilerideki pawn
         return candidates
             .OrderByDescending(c => GetProgressScore(c.pawn, teamPath, ringCount))
             .First().pawn;
@@ -374,10 +437,8 @@ public class TurnManager : MonoBehaviour
 
     private Pawn ChooseBotPawnFallback(TeamColor team, int rolled)
     {
-        // TilePath yoksa: en azından oynanabilir mantıkla seç
         var list = GetList(team);
 
-        // capture hesaplayamayız, sadece 6 ise start pawn önceliği, yoksa ilk oynanabilir
         if (rolled == 6)
         {
             var sp = list.FirstOrDefault(p => p != null && !p.HasFinished && p.IsInStart);
@@ -389,14 +450,7 @@ public class TurnManager : MonoBehaviour
 
     private SimResult SimulateMove(Pawn pawn, TeamPath teamPath, int ringCount, int steps)
     {
-        // PawnMover ile aynı kural setini baz alır (basitleştirilmiş):
-        // - Start: sadece 6 ile çıkar, ringIndex = startIndexOnRing
-        // - Ring: entryIndex'e gelirse safe zone'a girer, overshoot yasak
-        // - SafeZone: overshoot yasak
-        // Bu simülasyon sadece "endsOnRing + ringIndex" bilgisini capture hesabı için döndürür.
-
         SimResult r = new SimResult { canMove = false, endsOnRing = false, ringIndex = -1 };
-
         if (pawn == null || pawn.HasFinished) return r;
 
         // Start
@@ -416,7 +470,6 @@ public class TurnManager : MonoBehaviour
             int remainingToFinish = finishStepIndex - pawn.safeIndex;
             if (steps > remainingToFinish) return r;
 
-            // Safe zone sonu capture değil
             r.canMove = true;
             r.endsOnRing = false;
             return r;
@@ -436,7 +489,6 @@ public class TurnManager : MonoBehaviour
 
             if (steps > totalRemainingPath) return r;
 
-            // Eğer steps <= ringStepsToEntry: ring üzerinde kalır
             if (steps <= ringStepsToEntry)
             {
                 int newIndex = (pawn.ringIndex + steps) % ringCount;
@@ -447,7 +499,6 @@ public class TurnManager : MonoBehaviour
             }
             else
             {
-                // Safe zone'a giriyor (capture yok)
                 r.canMove = true;
                 r.endsOnRing = false;
                 return r;
@@ -459,10 +510,6 @@ public class TurnManager : MonoBehaviour
 
     private float GetProgressScore(Pawn pawn, TeamPath teamPath, int ringCount)
     {
-        // Basit “en ileride” metriği:
-        // Start: -1
-        // Ring: team start'a göre clockwise mesafe
-        // Safe: ringCount + safeIndex
         if (pawn == null) return -999f;
         if (pawn.HasFinished) return 99999f;
 
@@ -500,5 +547,48 @@ public class TurnManager : MonoBehaviour
         if (team != TeamColor.Blue) all.AddRange(bluePawns);
         if (team != TeamColor.Yellow) all.AddRange(yellowPawns);
         return all;
+    }
+
+    // -------------------------
+    // END GAME
+    // -------------------------
+    private void CheckEndGameAndHandle()
+    {
+        if (gameEnded) return;
+
+        // Her takım için "4 pawn finished" kontrolü
+        if (IsTeamFinished(redPawns)) { EndGame(TeamColor.Red); return; }
+        if (IsTeamFinished(greenPawns)) { EndGame(TeamColor.Green); return; }
+        if (IsTeamFinished(bluePawns)) { EndGame(TeamColor.Blue); return; }
+        if (IsTeamFinished(yellowPawns)) { EndGame(TeamColor.Yellow); return; }
+    }
+
+    private bool IsTeamFinished(List<Pawn> pawns)
+    {
+        if (pawns == null || pawns.Count == 0) return false;
+        return pawns.All(p => p != null && p.HasFinished);
+    }
+
+    private void EndGame(TeamColor winnerTeam)
+    {
+        gameEnded = true;
+
+        // Inputları kapat
+        ClearAllSelectableFlags();
+        humanSelectablePawns.Clear();
+        humanSelectedPawn = null;
+        humanPhase = HumanPhase.Moving;
+        humanExtraRollPending = false;
+        turnInProgress = false;
+
+        if (dice != null)
+            dice.SetRollButtonInteractable(false);
+
+        bool humanWon = enableHuman && (winnerTeam == humanTeam);
+
+        if (winScreen != null) winScreen.SetActive(humanWon);
+        if (loseScreen != null) loseScreen.SetActive(!humanWon);
+
+        Debug.Log($"GAME ENDED. Winner: {winnerTeam}. HumanWon={humanWon}");
     }
 }
