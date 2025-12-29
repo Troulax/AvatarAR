@@ -156,3 +156,10 @@ Recommended settings:
 
 This project is developed **step by step**,  
 and each stage should be tested on a real device before moving forward.
+
+---
+
+## Developers
+
+This project is developed by Yaşar Düzgün, Arda Ali Altıncı, Yüşa Emir Metin, Mert Kocuğlu for within the scope of ADA_410 course.
+
