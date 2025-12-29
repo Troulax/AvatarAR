@@ -879,6 +879,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PawnMover
   tilePath: {fileID: 1449879893}
   stepDuration: 0.15
+  turnManager: {fileID: 1449879894}
+  offerManager: {fileID: 967887928}
   safeStarRingTiles:
   - {fileID: 222335823}
   - {fileID: 1219762360}
@@ -2280,6 +2282,11 @@ MonoBehaviour:
   team: 3
   ringIndex: -1
   safeIndex: -1
+  lastAvatarBuffTurnId: -1
+  KyoshiProtectionTurnsLeft: 0
+  KorraExtraRollOnCapture: 0
+  KorraSixOnCapture: 0
+  RokuPendingCheckNextRoll: 0
 --- !u!114 &389952649
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3352,6 +3359,11 @@ MonoBehaviour:
   team: 0
   ringIndex: -1
   safeIndex: -1
+  lastAvatarBuffTurnId: -1
+  KyoshiProtectionTurnsLeft: 0
+  KorraExtraRollOnCapture: 0
+  KorraSixOnCapture: 0
+  RokuPendingCheckNextRoll: 0
 --- !u!1 &686213374
 GameObject:
   m_ObjectHideFlags: 0
@@ -3493,6 +3505,11 @@ MonoBehaviour:
   team: 1
   ringIndex: -1
   safeIndex: -1
+  lastAvatarBuffTurnId: -1
+  KyoshiProtectionTurnsLeft: 0
+  KorraExtraRollOnCapture: 0
+  KorraSixOnCapture: 0
+  RokuPendingCheckNextRoll: 0
 --- !u!114 &706285603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3820,6 +3837,11 @@ MonoBehaviour:
   team: 3
   ringIndex: -1
   safeIndex: -1
+  lastAvatarBuffTurnId: -1
+  KyoshiProtectionTurnsLeft: 0
+  KorraExtraRollOnCapture: 0
+  KorraSixOnCapture: 0
+  RokuPendingCheckNextRoll: 0
 --- !u!114 &763370779
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3887,6 +3909,11 @@ MonoBehaviour:
   team: 2
   ringIndex: -1
   safeIndex: -1
+  lastAvatarBuffTurnId: -1
+  KyoshiProtectionTurnsLeft: 0
+  KorraExtraRollOnCapture: 0
+  KorraSixOnCapture: 0
+  RokuPendingCheckNextRoll: 0
 --- !u!114 &778893471
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3919,6 +3946,11 @@ MonoBehaviour:
   team: 1
   ringIndex: -1
   safeIndex: -1
+  lastAvatarBuffTurnId: -1
+  KyoshiProtectionTurnsLeft: 0
+  KorraExtraRollOnCapture: 0
+  KorraSixOnCapture: 0
+  RokuPendingCheckNextRoll: 0
 --- !u!114 &781708163
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4509,6 +4541,11 @@ MonoBehaviour:
   team: 1
   ringIndex: -1
   safeIndex: -1
+  lastAvatarBuffTurnId: -1
+  KyoshiProtectionTurnsLeft: 0
+  KorraExtraRollOnCapture: 0
+  KorraSixOnCapture: 0
+  RokuPendingCheckNextRoll: 0
 --- !u!114 &889481953
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4722,6 +4759,11 @@ MonoBehaviour:
   team: 0
   ringIndex: -1
   safeIndex: -1
+  lastAvatarBuffTurnId: -1
+  KyoshiProtectionTurnsLeft: 0
+  KorraExtraRollOnCapture: 0
+  KorraSixOnCapture: 0
+  RokuPendingCheckNextRoll: 0
 --- !u!114 &938496151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5003,6 +5045,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 965632907}
   m_CullTransparentMesh: 1
+--- !u!1 &967887926
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 967887927}
+  - component: {fileID: 967887928}
+  m_Layer: 0
+  m_Name: OfferManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &967887927
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967887926}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1449879888}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &967887928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967887926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e46dccc9aa31744ca7b9102cf1957cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OfferManager
+  offers:
+  - avatar: 0
+    element: 0
+    tile: {fileID: 1514960163}
+  - avatar: 1
+    element: 1
+    tile: {fileID: 204028690}
+  - avatar: 2
+    element: 2
+    tile: {fileID: 995010594}
+  - avatar: 3
+    element: 3
+    tile: {fileID: 1096817676}
 --- !u!1 &981276104
 GameObject:
   m_ObjectHideFlags: 0
@@ -5242,6 +5341,11 @@ MonoBehaviour:
   team: 3
   ringIndex: -1
   safeIndex: -1
+  lastAvatarBuffTurnId: -1
+  KyoshiProtectionTurnsLeft: 0
+  KorraExtraRollOnCapture: 0
+  KorraSixOnCapture: 0
+  RokuPendingCheckNextRoll: 0
 --- !u!114 &1002764824
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6050,6 +6154,11 @@ MonoBehaviour:
   team: 1
   ringIndex: -1
   safeIndex: -1
+  lastAvatarBuffTurnId: -1
+  KyoshiProtectionTurnsLeft: 0
+  KorraExtraRollOnCapture: 0
+  KorraSixOnCapture: 0
+  RokuPendingCheckNextRoll: 0
 --- !u!114 &1204948845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6082,6 +6191,11 @@ MonoBehaviour:
   team: 0
   ringIndex: -1
   safeIndex: -1
+  lastAvatarBuffTurnId: -1
+  KyoshiProtectionTurnsLeft: 0
+  KorraExtraRollOnCapture: 0
+  KorraSixOnCapture: 0
+  RokuPendingCheckNextRoll: 0
 --- !u!114 &1213270530
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7252,6 +7366,11 @@ MonoBehaviour:
   team: 2
   ringIndex: -1
   safeIndex: -1
+  lastAvatarBuffTurnId: -1
+  KyoshiProtectionTurnsLeft: 0
+  KorraExtraRollOnCapture: 0
+  KorraSixOnCapture: 0
+  RokuPendingCheckNextRoll: 0
 --- !u!114 &1427324045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7592,6 +7711,7 @@ Transform:
   m_Children:
   - {fileID: 217141124}
   - {fileID: 1834270809}
+  - {fileID: 967887927}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1449879891
@@ -8874,6 +8994,11 @@ MonoBehaviour:
   team: 3
   ringIndex: -1
   safeIndex: -1
+  lastAvatarBuffTurnId: -1
+  KyoshiProtectionTurnsLeft: 0
+  KorraExtraRollOnCapture: 0
+  KorraSixOnCapture: 0
+  RokuPendingCheckNextRoll: 0
 --- !u!114 &1682349484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9249,6 +9374,11 @@ MonoBehaviour:
   team: 0
   ringIndex: -1
   safeIndex: -1
+  lastAvatarBuffTurnId: -1
+  KyoshiProtectionTurnsLeft: 0
+  KorraExtraRollOnCapture: 0
+  KorraSixOnCapture: 0
+  RokuPendingCheckNextRoll: 0
 --- !u!114 &1728790650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9320,6 +9450,11 @@ MonoBehaviour:
   team: 2
   ringIndex: -1
   safeIndex: -1
+  lastAvatarBuffTurnId: -1
+  KyoshiProtectionTurnsLeft: 0
+  KorraExtraRollOnCapture: 0
+  KorraSixOnCapture: 0
+  RokuPendingCheckNextRoll: 0
 --- !u!114 &1745737556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10204,6 +10339,11 @@ MonoBehaviour:
   team: 2
   ringIndex: -1
   safeIndex: -1
+  lastAvatarBuffTurnId: -1
+  KyoshiProtectionTurnsLeft: 0
+  KorraExtraRollOnCapture: 0
+  KorraSixOnCapture: 0
+  RokuPendingCheckNextRoll: 0
 --- !u!114 &1961178428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10828,7 +10968,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!64 &2111526813
 MeshCollider:
   m_ObjectHideFlags: 0

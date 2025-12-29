@@ -50,23 +50,18 @@ public class TurnManager : MonoBehaviour
     [SerializeField] private GameObject settingsButtonObject;
     [SerializeField] private GameObject playerImageObject;
     [SerializeField] private GameObject boardBaseObject;
-
     [Tooltip("GameScreen başlarken kapalı olacak; human team seçince açılacak dekor objesi.")]
     [SerializeField] private GameObject decorationsObject;
 
     [Header("Player Image")]
     [Tooltip("PlayerImage UI objesinin Image component'i. (playerImageObject üstünde veya child'ında olabilir; buraya doğru Image'ı sürükle)")]
     [SerializeField] private Image playerImage;
-
     [Tooltip("Fire seçilince kullanılacak sprite (fire_player).")]
     [SerializeField] private Sprite firePlayerSprite;
-
     [Tooltip("Earth seçilince kullanılacak sprite (earth_player).")]
     [SerializeField] private Sprite earthPlayerSprite;
-
     [Tooltip("Air seçilince kullanılacak sprite (air_player).")]
     [SerializeField] private Sprite airPlayerSprite;
-
     [Tooltip("Water seçilince kullanılacak sprite (water_player).")]
     [SerializeField] private Sprite waterPlayerSprite;
 
@@ -85,12 +80,14 @@ public class TurnManager : MonoBehaviour
     [Header("Human Config")]
     [Tooltip("İnsan oyuncu açık mı? (1 insan 3 bot senaryosunda true)")]
     [SerializeField] private bool enableHuman = true;
-
     [Tooltip("İnsan oyuncunun takımı. TeamSelecting seçiminden sonra set edilir.")]
     [SerializeField] private TeamColor humanTeam = TeamColor.Red;
 
     private int turnIndex = 0;
     private bool turnInProgress = false;
+
+    // ✅ Takım tur sayacı (takım değiştiğinde artar; 6 ile ekstra zarlar aynı TurnId içinde)
+    public int TurnId { get; private set; } = -1;
 
     // Human selection
     private Pawn humanSelectedPawn;
@@ -104,10 +101,42 @@ public class TurnManager : MonoBehaviour
 
     // Game state
     private bool gameEnded = false;
-    private bool gameStarted = false; // team seçilmeden oyun başlamaz
+    private bool gameStarted = false;
+
+    // -------------------------
+    // AVATAR QUEUES / FLAGS
+    // -------------------------
+    private bool queuedRokuNativeDeploy = false;
+    private TeamColor queuedRokuNativeTeam;
+
+    private bool queuedAangExtraMove = false;
+    private Pawn queuedAangPawn;
+    private int queuedAangSteps = 0;
+
+    // ✅ Korra native bonus move QUEUE (ADIM 3 FIX)
+    private bool queuedKorraSixBonusMove = false;
+    private Pawn queuedKorraSixPawn;
+
+    private bool botExtraRollPending = false; // Korra non-native extra roll for bots
+    private bool suppressSixExtraRollThisTurn = false; // Korra native / Roku native: 6 gelse bile ekstra zar yok
+
+    // bonus 6 sırasında capture tetiklenmesin (KorraSix tekrar zincirlenmesin)
+    private bool processingBonusMove = false;
 
     public TeamColor CurrentTeam => turnOrder[turnIndex];
     public bool IsHumanTurn => gameStarted && enableHuman && CurrentTeam == humanTeam;
+
+    private void OnEnable()
+    {
+        if (mover != null)
+            mover.OnCaptureHappened += HandleCaptureHappened;
+    }
+
+    private void OnDisable()
+    {
+        if (mover != null)
+            mover.OnCaptureHappened -= HandleCaptureHappened;
+    }
 
     private void Start()
     {
@@ -116,6 +145,7 @@ public class TurnManager : MonoBehaviour
 
         gameEnded = false;
         gameStarted = false;
+        TurnId = -1;
 
         if (teamSelectingPanel != null) teamSelectingPanel.SetActive(true);
         SetGameUIActive(false);
@@ -145,15 +175,14 @@ public class TurnManager : MonoBehaviour
     // Water = Blue
     // Air   = Yellow
     public void SelectEarth() => StartGameWithHumanElement(Element.Earth);
-    public void SelectFire()  => StartGameWithHumanElement(Element.Fire);
+    public void SelectFire() => StartGameWithHumanElement(Element.Fire);
     public void SelectWater() => StartGameWithHumanElement(Element.Water);
-    public void SelectAir()   => StartGameWithHumanElement(Element.Air);
+    public void SelectAir() => StartGameWithHumanElement(Element.Air);
 
     private enum Element { Fire, Earth, Air, Water }
 
     private void StartGameWithHumanElement(Element element)
     {
-        // Element -> Team
         TeamColor team = element switch
         {
             Element.Fire => TeamColor.Red,
@@ -163,7 +192,6 @@ public class TurnManager : MonoBehaviour
             _ => TeamColor.Red
         };
 
-        // Element -> Player sprite
         Sprite sprite = element switch
         {
             Element.Fire => firePlayerSprite,
@@ -176,9 +204,6 @@ public class TurnManager : MonoBehaviour
         StartGameWithHumanTeam(team, sprite);
     }
 
-    /// <summary>
-    /// TeamSelecting sonrası çağrılır. Oyunu başlatır.
-    /// </summary>
     private void StartGameWithHumanTeam(TeamColor selectedTeam, Sprite selectedPlayerSprite)
     {
         if (gameEnded) return;
@@ -196,12 +221,23 @@ public class TurnManager : MonoBehaviour
         int idx = System.Array.IndexOf(turnOrder, humanTeam);
         turnIndex = idx >= 0 ? idx : 0;
 
+        TurnId = 0;
+
         turnInProgress = false;
         humanSelectablePawns.Clear();
         humanSelectedPawn = null;
         lastHumanRoll = 0;
         humanPhase = HumanPhase.WaitingRoll;
         humanExtraRollPending = false;
+
+        queuedRokuNativeDeploy = false;
+        queuedAangExtraMove = false;
+        queuedKorraSixBonusMove = false;
+        queuedKorraSixPawn = null;
+
+        botExtraRollPending = false;
+        suppressSixExtraRollThisTurn = false;
+        processingBonusMove = false;
 
         UpdateTurnUI();
         ClearAllSelectableFlags();
@@ -212,6 +248,27 @@ public class TurnManager : MonoBehaviour
             dice.SetRollButtonInteractable(IsHumanTurn && humanPhase == HumanPhase.WaitingRoll);
 
         StartCoroutine(TurnLoop());
+    }
+
+    // -------------------------
+    // PUBLIC QUEUE API (PawnMover calls)
+    // -------------------------
+    public void QueueRokuNativeDeploy(TeamColor team)
+    {
+        queuedRokuNativeDeploy = true;
+        queuedRokuNativeTeam = team;
+
+        if (team == CurrentTeam)
+            suppressSixExtraRollThisTurn = true;
+    }
+
+    public void QueueAangExtraMove(Pawn pawn, int steps)
+    {
+        if (pawn == null || steps <= 0) return;
+
+        queuedAangExtraMove = true;
+        queuedAangPawn = pawn;
+        queuedAangSteps = steps;
     }
 
     // -------------------------
@@ -298,6 +355,12 @@ public class TurnManager : MonoBehaviour
                 yield return PlaySingleTurnForBot(CurrentTeam);
 
                 if (gameEnded) yield break;
+
+                if (botExtraRollPending)
+                {
+                    botExtraRollPending = false;
+                    continue;
+                }
             }
 
             yield return SwitchToNextTurnWithDelay();
@@ -312,7 +375,16 @@ public class TurnManager : MonoBehaviour
 
         if (gameEnded) yield break;
 
+        // ✅ Takım değişimi: yeni "takım turu" başladı => TurnId++
         turnIndex = (turnIndex + 1) % turnOrder.Length;
+        TurnId++;
+
+        // ✅ Kyoshi turn tick
+        TickDownKyoshiForAllPawns();
+
+        // yeni tur için reset
+        suppressSixExtraRollThisTurn = false;
+
         UpdateTurnUI();
 
         ClearAllSelectableFlags();
@@ -322,8 +394,29 @@ public class TurnManager : MonoBehaviour
         humanPhase = HumanPhase.WaitingRoll;
         humanExtraRollPending = false;
 
+        queuedKorraSixBonusMove = false;
+        queuedKorraSixPawn = null;
+
         if (safeStarRingIndices.Count == 0 && safeStarRingTiles.Count > 0)
             BuildSafeStarIndexCache();
+    }
+
+    private void TickDownKyoshiForAllPawns()
+    {
+        foreach (var p in GetAllPawns())
+        {
+            if (p == null) continue;
+            if (p.KyoshiProtectionTurnsLeft > 0)
+                p.KyoshiProtectionTurnsLeft--;
+        }
+    }
+
+    private IEnumerable<Pawn> GetAllPawns()
+    {
+        foreach (var p in redPawns) yield return p;
+        foreach (var p in greenPawns) yield return p;
+        foreach (var p in bluePawns) yield return p;
+        foreach (var p in yellowPawns) yield return p;
     }
 
     private void UpdateTurnUI()
@@ -350,6 +443,8 @@ public class TurnManager : MonoBehaviour
         humanPhase = HumanPhase.Moving;
         dice.SetRollButtonInteractable(false);
 
+        suppressSixExtraRollThisTurn = false;
+
         lastHumanRoll = 0;
         yield return dice.RollDiceCoroutine(v => lastHumanRoll = v);
 
@@ -358,6 +453,8 @@ public class TurnManager : MonoBehaviour
             turnInProgress = false;
             yield break;
         }
+
+        bool allowRokuExtraDeploy = ConsumeRokuPendingByRoll(humanTeam, lastHumanRoll);
 
         BuildHumanSelectablePawns(lastHumanRoll);
 
@@ -371,6 +468,7 @@ public class TurnManager : MonoBehaviour
             turnInProgress = false;
             yield break;
         }
+
         if (lastHumanRoll != 6 && humanSelectablePawns.Count == 1)
         {
             humanSelectedPawn = humanSelectablePawns.First();
@@ -395,10 +493,17 @@ public class TurnManager : MonoBehaviour
 
         yield return mover.MoveSelectedPawnCoroutine(humanSelectedPawn, lastHumanRoll);
 
+        yield return ResolveQueuedActionsAfterMove(CurrentTeam, lastHumanRoll, allowRokuExtraDeploy);
+
         CheckEndGameAndHandle();
 
         if (!gameEnded)
-            humanExtraRollPending = (lastHumanRoll == 6);
+        {
+            if (suppressSixExtraRollThisTurn)
+                humanExtraRollPending = false;
+            else
+                humanExtraRollPending = (lastHumanRoll == 6);
+        }
 
         turnInProgress = false;
     }
@@ -455,6 +560,7 @@ public class TurnManager : MonoBehaviour
             yield break;
 
         turnInProgress = true;
+        suppressSixExtraRollThisTurn = false;
 
         bool extraTurn;
         do
@@ -465,6 +571,8 @@ public class TurnManager : MonoBehaviour
             yield return dice.RollDiceCoroutine(v => rolled = v);
 
             if (gameEnded) break;
+
+            bool allowRokuExtraDeploy = ConsumeRokuPendingByRoll(team, rolled);
 
             Pawn chosen = ChooseBotPawnSmart(team, rolled);
 
@@ -477,10 +585,13 @@ public class TurnManager : MonoBehaviour
 
             yield return mover.MoveSelectedPawnCoroutine(chosen, rolled);
 
+            yield return ResolveQueuedActionsAfterMove(team, rolled, allowRokuExtraDeploy);
+
             CheckEndGameAndHandle();
             if (gameEnded) break;
 
-            extraTurn = (rolled == 6);
+            extraTurn = (!suppressSixExtraRollThisTurn && rolled == 6);
+
             if (extraTurn)
                 yield return new WaitForSeconds(turnDelaySeconds);
 
@@ -489,6 +600,116 @@ public class TurnManager : MonoBehaviour
         turnInProgress = false;
     }
 
+    // -------------------------
+    // QUEUED ACTIONS RESOLUTION
+    // -------------------------
+    private IEnumerator ResolveQueuedActionsAfterMove(TeamColor team, int rolled, bool allowRokuExtraDeploy)
+    {
+        // ✅ (ADIM 3) Korra native bonus 6 önce çöz
+        if (queuedKorraSixBonusMove && queuedKorraSixPawn != null && queuedKorraSixPawn.team == team)
+        {
+            var p = queuedKorraSixPawn;
+            queuedKorraSixBonusMove = false;
+            queuedKorraSixPawn = null;
+
+            suppressSixExtraRollThisTurn = true; // tur bitecek
+            processingBonusMove = true;
+
+            Debug.Log($"[Korra] {p.name} bonus move: +6 (native capture rule).");
+            yield return mover.MoveSelectedPawnCoroutine(p, 6);
+
+            processingBonusMove = false;
+
+            // Korra native kuralın: bonus 6’dan sonra tetik yok, tur bitecek
+        }
+
+        // 1) Aang extra move
+        if (queuedAangExtraMove && queuedAangPawn != null && queuedAangPawn.team == team)
+        {
+            var p = queuedAangPawn;
+            int steps = queuedAangSteps;
+
+            queuedAangExtraMove = false;
+            queuedAangPawn = null;
+            queuedAangSteps = 0;
+
+            yield return mover.MoveSelectedPawnCoroutine(p, steps);
+        }
+
+        // 2) Roku native deploy
+        if (queuedRokuNativeDeploy && queuedRokuNativeTeam == team)
+        {
+            queuedRokuNativeDeploy = false;
+
+            suppressSixExtraRollThisTurn = true;
+
+            yield return DeployOnePawnFromStart(team);
+        }
+
+        // 3) Roku non-native extra deploy (only if roll>=4)
+        if (allowRokuExtraDeploy)
+        {
+            yield return DeployOnePawnFromStart(team);
+        }
+    }
+
+    private IEnumerator DeployOnePawnFromStart(TeamColor team)
+    {
+        var list = GetList(team);
+        var pawn = list.FirstOrDefault(p => p != null && !p.HasFinished && p.IsInStart);
+        if (pawn == null) yield break;
+
+        yield return mover.MoveSelectedPawnCoroutine(pawn, 6);
+    }
+
+    private bool ConsumeRokuPendingByRoll(TeamColor team, int rolled)
+    {
+        var list = GetList(team);
+        Pawn holder = list.FirstOrDefault(p => p != null && p.RokuPendingCheckNextRoll);
+        if (holder == null) return false;
+
+        holder.RokuPendingCheckNextRoll = false;
+        return rolled >= 4;
+    }
+
+    // -------------------------
+    // CAPTURE EVENT => KORRA
+    // -------------------------
+    private void HandleCaptureHappened(Pawn moverPawn, Pawn capturedPawn)
+    {
+        // bonus move sırasında zincir tetikleme olmasın
+        if (processingBonusMove) return;
+
+        if (moverPawn == null) return;
+        if (moverPawn.team != CurrentTeam) return;
+
+        // Korra non-native: capture => extra roll
+        if (moverPawn.KorraExtraRollOnCapture)
+        {
+            if (IsHumanTurn)
+                humanExtraRollPending = true;
+            else
+                botExtraRollPending = true;
+
+            Debug.Log($"[Korra] Extra roll granted to team {moverPawn.team} (capture).");
+        }
+
+        // Korra native: capture => +6 say ve tur bitecek
+        if (moverPawn.KorraSixOnCapture)
+        {
+            suppressSixExtraRollThisTurn = true;
+
+            // ✅ (ADIM 3) Paralel coroutine başlatmak yok: queue'ya al
+            queuedKorraSixBonusMove = true;
+            queuedKorraSixPawn = moverPawn;
+
+            Debug.Log($"[Korra] Queued bonus +6 for {moverPawn.name} (native capture rule).");
+        }
+    }
+
+    // -------------------------
+    // BOT AI (unchanged core)
+    // -------------------------
     private Pawn ChooseBotPawnSmart(TeamColor team, int rolled)
     {
         if (tilePath == null || tilePath.RingTiles == null || tilePath.RingTiles.Count == 0)
@@ -516,7 +737,6 @@ public class TurnManager : MonoBehaviour
         if (candidates.Count == 0)
             return null;
 
-        // 1) CAPTURE önceliği
         var captureCandidates = new List<Pawn>();
         foreach (var c in candidates)
         {
@@ -535,7 +755,6 @@ public class TurnManager : MonoBehaviour
                 .First();
         }
 
-        // 2) 6 ise: start pawn
         if (rolled == 6)
         {
             var startPawns = candidates.Where(c => c.pawn.IsInStart).Select(c => c.pawn).ToList();
@@ -543,7 +762,6 @@ public class TurnManager : MonoBehaviour
                 return startPawns[0];
         }
 
-        // 3) en ileride
         return candidates.OrderByDescending(c => GetProgressScore(c.pawn, teamPath, ringCount)).First().pawn;
     }
 
@@ -684,6 +902,7 @@ public class TurnManager : MonoBehaviour
         humanSelectedPawn = null;
         humanPhase = HumanPhase.Moving;
         humanExtraRollPending = false;
+        botExtraRollPending = false;
         turnInProgress = false;
 
         if (dice != null)

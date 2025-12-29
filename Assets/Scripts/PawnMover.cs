@@ -8,6 +8,12 @@ public class PawnMover : MonoBehaviour
     [SerializeField] private TilePath tilePath;
     [SerializeField] private float stepDuration = 0.15f;
 
+    [Header("Managers (Offer System)")]
+    [Tooltip("GameManager üstündeki TurnManager referansı (TurnId için).")]
+    [SerializeField] private TurnManager turnManager;
+    [Tooltip("GameManager üstündeki OfferManager referansı (offer tile konfigleri için).")]
+    [SerializeField] private OfferManager offerManager;
+
     [Header("Safe Star Tiles (Ring)")]
     [Tooltip("Ring üzerindeki güvenli yıldız tile objelerini buraya sürükle (toplam 8 adet). Bu tile'lara inince capture olmaz.")]
     [SerializeField] private List<Transform> safeStarRingTiles = new();
@@ -22,9 +28,13 @@ public class PawnMover : MonoBehaviour
     [Tooltip("Capture animasyonu bittikten sonra tur devam etmeden önce beklenecek süre (sn).")]
     [SerializeField] private float delayAfterCaptureSeconds = 1f;
 
+    // ✅ Capture event (TurnManager Korra/Roku için dinleyecek)
+    public System.Action<Pawn, Pawn> OnCaptureHappened; // (moverPawn, capturedPawn)
+
+    // Pawn.cs'e dokunmadan "hangi tile anchor'da duruyor?" bilgisini tutuyoruz
     private readonly Dictionary<Pawn, TileAnchor> currentAnchorByPawn = new();
 
-    // Start position cache
+    // Start pozisyon cache
     private readonly Dictionary<Pawn, Vector3> startPosByPawn = new();
     private readonly Dictionary<Pawn, Quaternion> startRotByPawn = new();
 
@@ -91,14 +101,8 @@ public class PawnMover : MonoBehaviour
                 }
             }
 
-            if (idx >= 0)
-            {
-                safeStarRingIndices.Add(idx);
-            }
-            else
-            {
-                Debug.LogWarning($"[PawnMover] safeStarRingTiles içindeki '{starTf.name}', tilePath.RingTiles ile eşleşmedi. RingTiles listendeki tile objeleri ile Inspector'da seçtiklerin aynı değil.");
-            }
+            if (idx >= 0) safeStarRingIndices.Add(idx);
+            else Debug.LogWarning($"[PawnMover] safeStarRingTiles içindeki '{starTf.name}', tilePath.RingTiles ile eşleşmedi. RingTiles listendeki tile objeleri ile Inspector'da seçtiklerin aynı değil.");
         }
     }
 
@@ -115,7 +119,7 @@ public class PawnMover : MonoBehaviour
             startPosByPawn[pawn] = pawn.transform.position;
             startRotByPawn[pawn] = pawn.transform.rotation;
         }
- 
+
         if (safeStarRingIndices.Count == 0 && safeStarRingTiles.Count > 0)
             RebuildSafeStarIndexCache();
 
@@ -127,6 +131,7 @@ public class PawnMover : MonoBehaviour
         int remainingSteps = steps;
         Transform finalTile = null;
 
+        // START -> RING (6)
         if (pawn.IsInStart)
         {
             if (steps != 6) yield break;
@@ -137,10 +142,15 @@ public class PawnMover : MonoBehaviour
             yield return MoveTo(finalTile, pawn);
 
             yield return TryCaptureOnFinalTileAnimated(pawn);
+
+            // ✅ Offer check (hamle sonunda)
+            TryTriggerOfferOnFinalTile(pawn, finalTile);
+
             RegisterPawnOnFinalTile(pawn, finalTile);
             yield break;
         }
 
+        // RING
         if (pawn.IsOnRing)
         {
             int entryIndex = (teamPath.startIndexOnRing - 2 + ringCount) % ringCount;
@@ -177,6 +187,7 @@ public class PawnMover : MonoBehaviour
             }
         }
 
+        // SAFE ZONE (capture yok / offer yok varsayımı)
         if (pawn.IsInSafeZone)
         {
             int finishStepIndex = teamPath.safeZoneTiles.Length;
@@ -210,7 +221,11 @@ public class PawnMover : MonoBehaviour
             }
         }
 
+        // Ring'de bitti ise capture dene
         yield return TryCaptureOnFinalTileAnimated(pawn);
+
+        // ✅ Offer check (hamle sonunda)
+        TryTriggerOfferOnFinalTile(pawn, finalTile);
 
         RegisterPawnOnFinalTile(pawn, finalTile);
     }
@@ -233,9 +248,6 @@ public class PawnMover : MonoBehaviour
         pawn.transform.position = end;
     }
 
-    /// <summary>
-    /// Finalde ring tile'a oturduysa ve safe-star değilse, aynı ringIndex'teki düşman pawn'ı animasyonla start'a yolla.
-    /// </summary>
     private IEnumerator TryCaptureOnFinalTileAnimated(Pawn moverPawn)
     {
         if (moverPawn == null) yield break;
@@ -258,7 +270,17 @@ public class PawnMover : MonoBehaviour
             if (other.HasFinished) continue;
             if (other.ringIndex != targetRingIndex) continue;
 
+            // ✅ Kyoshi koruması varsa capture iptal
+            if (other.KyoshiProtectionTurnsLeft > 0)
+            {
+                Debug.Log($"[Kyoshi] {other.name} is protected. Capture prevented.");
+                yield break;
+            }
+
             yield return CapturePawnToStartAnimated(other);
+
+            // ✅ Capture event
+            OnCaptureHappened?.Invoke(moverPawn, other);
 
             if (delayAfterCaptureSeconds > 0f)
                 yield return new WaitForSeconds(delayAfterCaptureSeconds);
@@ -272,6 +294,9 @@ public class PawnMover : MonoBehaviour
         if (capturedPawn == null) yield break;
 
         UnregisterPawnFromAnchor(capturedPawn);
+
+        // ✅ Capture reset: start'a dönünce avatar buff hakkı sıfırlansın
+        capturedPawn.ResetAvatarBuffLock();
 
         capturedPawn.ringIndex = -1;
         capturedPawn.safeIndex = -1;
@@ -319,6 +344,97 @@ public class PawnMover : MonoBehaviour
 
         capturedPawn.transform.localScale = originalScale;
         Debug.Log($"CAPTURED (animated): {capturedPawn.name} sent back to start.");
+    }
+
+    private static ElementType TeamToElementType(TeamColor team)
+    {
+        return team switch
+        {
+            TeamColor.Red => ElementType.Fire,
+            TeamColor.Green => ElementType.Earth,
+            TeamColor.Blue => ElementType.Water,
+            TeamColor.Yellow => ElementType.Air,
+            _ => ElementType.Fire
+        };
+    }
+
+    private static bool IsPawnNativeToOffer(Pawn pawn, AvatarOfferConfig offer)
+    {
+        if (pawn == null || offer == null) return false;
+        return TeamToElementType(pawn.team) == offer.element;
+    }
+
+    // ✅ Offer trigger (hamle sonunda çalışır)
+    private void TryTriggerOfferOnFinalTile(Pawn pawn, Transform finalTile)
+    {
+        if (pawn == null || finalTile == null) return;
+        if (offerManager == null || turnManager == null) return;
+
+        if (!offerManager.TryGetOffer(finalTile, out var offer))
+            return;
+
+        // Bu pawn bu takım turunda zaten offer aldı mı?
+        bool consumed = pawn.TryConsumeAvatarBuff(turnManager.TurnId);
+        if (!consumed)
+        {
+            Debug.Log($"[Offer] {pawn.name} already took an avatar buff this turn (TurnId={turnManager.TurnId}).");
+            return;
+        }
+
+        bool isNative = IsPawnNativeToOffer(pawn, offer);
+
+        Debug.Log($"[Offer] {pawn.name} triggered {offer.avatar} ({offer.element}) | native={isNative} | tile='{finalTile.name}' | TurnId={turnManager.TurnId}");
+
+        switch (offer.avatar)
+        {
+            case AvatarType.Kyoshi:
+            {
+                int turns = isNative ? Random.Range(2, 6) : Random.Range(1, 4); // 2-5 / 1-3
+                pawn.KyoshiProtectionTurnsLeft = Mathf.Max(pawn.KyoshiProtectionTurnsLeft, turns);
+                Debug.Log($"[Kyoshi] {pawn.name} protection set to {pawn.KyoshiProtectionTurnsLeft} turns.");
+                break;
+            }
+
+            case AvatarType.Roku:
+            {
+                if (isNative)
+                {
+                    // Native: 1 pawn indir + tur geçecek
+                    turnManager.QueueRokuNativeDeploy(pawn.team);
+                }
+                else
+                {
+                    // Non-native: next roll check
+                    pawn.RokuPendingCheckNextRoll = true;
+                    Debug.Log($"[Roku] {pawn.name} pending next roll check (>=4 => extra deploy).");
+                }
+                break;
+            }
+
+            case AvatarType.Aang:
+            {
+                // Glider: ekstra ilerleme (capture final tile’da zaten çalışıyor)
+                int extraSteps = isNative ? Random.Range(5, 9) : Random.Range(3, 7); // 5-8 / 3-6
+                turnManager.QueueAangExtraMove(pawn, extraSteps);
+                Debug.Log($"[Aang] queued extra move: {pawn.name} +{extraSteps} steps.");
+                break;
+            }
+
+            case AvatarType.Korra:
+            {
+                if (isNative)
+                {
+                    pawn.KorraSixOnCapture = true;
+                    Debug.Log($"[Korra] {pawn.name} will count as 6 on capture (then turn ends).");
+                }
+                else
+                {
+                    pawn.KorraExtraRollOnCapture = true;
+                    Debug.Log($"[Korra] {pawn.name} will grant extra roll on capture (game-long).");
+                }
+                break;
+            }
+        }
     }
 
     private void RegisterPawnOnFinalTile(Pawn pawn, Transform finalTileTransform)
